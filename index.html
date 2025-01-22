@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Busibot AI Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Particles background container -->
+<div id="particles-js"></div>
+
+<!-- A relative wrapper that holds the 4 containers + arrows in absolute positions -->
+<div class="carousel-wrapper">
+    <!-- Arrows absolutely placed or can be inside. We'll do them inside for simplicity -->
+    <button class="arrow-btn" id="arrow-left">&#9664;</button>
+
+    <!-- Four containers, each one a distinct chatbot -->
+    <div class="container" id="chat-bakery">
+        <div class="header"><span class="bot-title">Bakery Bot</span></div>
+        <div class="messages" id="messages-bakery"></div>
+        <div class="input-area">
+            <input type="text" id="input-bakery" disabled placeholder="(Inactive)" />
+            <button id="send-bakery" disabled>Send</button>
+        </div>
+    </div>
+
+    <div class="container" id="chat-boutique">
+        <div class="header"><span class="bot-title">Boutique Bot</span></div>
+        <div class="messages" id="messages-boutique"></div>
+        <div class="input-area">
+            <input type="text" id="input-boutique" disabled placeholder="(Inactive)" />
+            <button id="send-boutique" disabled>Send</button>
+        </div>
+    </div>
+
+    <div class="container" id="chat-electrical">
+        <div class="header"><span class="bot-title">Electrical Bot</span></div>
+        <div class="messages" id="messages-electrical"></div>
+        <div class="input-area">
+            <input type="text" id="input-electrical" disabled placeholder="(Inactive)" />
+            <button id="send-electrical" disabled>Send</button>
+        </div>
+    </div>
+
+    <div class="container" id="chat-realestate">
+        <div class="header"><span class="bot-title">Real Estate Bot</span></div>
+        <div class="messages" id="messages-realestate"></div>
+        <div class="input-area">
+            <input type="text" id="input-realestate" disabled placeholder="(Inactive)" />
+            <button id="send-realestate" disabled>Send</button>
+        </div>
+    </div>
+
+    <button class="arrow-btn" id="arrow-right">&#9654;</button>
+</div>
+
+<!-- Particles.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

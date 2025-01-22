@@ -1,0 +1,14 @@
+{
+  "name": "busibot-ai-website",
+  "version": "1.0.0",
+  "description": "A simple front-end site with lite-server for local dev",
+  "scripts": {
+    "start": "lite-server"
+  },
+  "devDependencies": {
+    "lite-server": "^2.6.1"
+  },
+  "dependencies": {
+    "particlesjs": "^2.2.3"
+  }
+}
