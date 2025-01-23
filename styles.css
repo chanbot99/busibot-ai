@@ -31,20 +31,14 @@ html, body {
 
 /* Header & Logo */
 .site-header {
-    position: relative;
+    /* Stays 100% wide for the background */
     width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     height: 170px;
     background-color: rgba(34, 34, 34, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    padding: 0 20px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-    z-index: 9999;
-}
-.logo-container {
-    display: flex;
-    align-items: center;
 }
 .logo-icon {
     height: 350px;
@@ -502,4 +496,34 @@ html, body {
         width: 80%;
         margin: 10px 0;
     }
+}
+
+.header-inner {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-links {
+    margin-right: 95px;
+}
+
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.header-links a {
+    color: #fff;
+    font-size: 24px;
+    text-decoration: none;
+    margin-left: 16px;
+    transition: color 0.2s;
+}
+.header-links a:hover {
+    color: #40CFFF;
 }
