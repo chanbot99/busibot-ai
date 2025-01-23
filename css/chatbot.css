@@ -8,11 +8,6 @@
     background-color: #fff;
     border-radius: 8px;
     border: none;
-    box-shadow:
-            0 0 6px  rgba(64, 207, 255, 0.8),
-            0 0 9px  rgba(64, 207, 255, 0.6),
-            0 0 12px rgba(64, 207, 255, 0.4),
-            0 0 15px rgba(64, 207, 255, 0.2);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -22,6 +17,42 @@
     left: 50%;
     transform: translate(-50%, -50%);
     transition: transform 0.4s, opacity 0.4s;
+}
+
+/* Bakery (dark gray) */
+#chat-bakery.container {
+    box-shadow:
+            0 0 12px  rgba(44, 44, 44, 0.8),
+            0 0 16px  rgba(44, 44, 44, 0.6),
+            0 0 20px rgba(44, 44, 44, 0.4),
+            0 0 25px rgba(44, 44, 44, 0.2);
+}
+
+/* Boutique (greenish) */
+#chat-boutique.container {
+    box-shadow:
+            0 0 12px  rgba(47, 62, 45, 0.8),
+            0 0 16px  rgba(47, 62, 45, 0.6),
+            0 0 20px rgba(47, 62, 45, 0.4),
+            0 0 25px rgba(47, 62, 45, 0.2);
+}
+
+/* Electrical (dark navy) */
+#chat-electrical.container {
+    box-shadow:
+            0 0 12px  rgba(36, 43, 77, 0.8),
+            0 0 16px  rgba(36, 43, 77, 0.6),
+            0 0 20px rgba(36, 43, 77, 0.4),
+            0 0 25px rgba(36, 43, 77, 0.2);
+}
+
+/* Real Estate (bright blue) */
+#chat-realestate.container {
+    box-shadow:
+            0 0 12px  rgba(0, 132, 255, 0.8),
+            0 0 16px  rgba(0, 132, 255, 0.6),
+            0 0 20px rgba(0, 132, 255, 0.4),
+            0 0 25px rgba(0, 132, 255, 0.2);
 }
 
 .container.center {
