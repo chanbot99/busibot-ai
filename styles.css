@@ -144,13 +144,17 @@ html, body {
     height: 600px;
     background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(255,255,255,0.2);
+    border: none;
+    box-shadow:
+            0 0 6px  rgba(64, 207, 255, 0.8),
+            0 0 9px  rgba(64, 207, 255, 0.6),
+            0 0 12px rgba(64, 207, 255, 0.4),
+            0 0 15px rgba(64, 207, 255, 0.2);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     opacity: 0.5;
     z-index: 1;
-    border: 1px solid #000;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -292,11 +296,15 @@ html, body {
     font-family: "Inter", Helvetica, Arial, sans-serif;
     flex: 1;
     margin: 0 10px;
-    background-color: rgba(255, 255, 255, 0.8);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    box-shadow:
+            0 0 6px  rgba(64, 207, 255, 0.8),
+            0 0 9px  rgba(64, 207, 255, 0.6),
+            0 0 12px rgba(64, 207, 255, 0.4),
+            0 0 15px rgba(64, 207, 255, 0.2);
     padding: 20px;
     text-align: left;
-    border: 3px solid #2196F3;
     border-radius: 0;
 }
 .benefit h2 {
@@ -332,10 +340,14 @@ html, body {
 }
 .statistics-box {
     font-family: "Inter", Helvetica, Arial, sans-serif;
-    background-color: rgba(255, 255, 255, 0.8);
-    border: 3px solid #2196F3;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    box-shadow:
+            0 0 6px  rgba(64, 207, 255, 0.8),
+            0 0 9px  rgba(64, 207, 255, 0.6),
+            0 0 12px rgba(64, 207, 255, 0.4),
+            0 0 15px rgba(64, 207, 255, 0.2);
     border-radius: 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     padding: 20px;
 }
 .statistics-box h2 {
@@ -385,10 +397,14 @@ html, body {
     gap: 20px;
 }
 .pricing-card {
-    background-color: rgba(255, 255, 255, 0.8);
-    border: 3px solid #2196F3;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    box-shadow:
+            0 0 6px  rgba(64, 207, 255, 0.8),
+            0 0 9px  rgba(64, 207, 255, 0.6),
+            0 0 12px rgba(64, 207, 255, 0.4),
+            0 0 15px rgba(64, 207, 255, 0.2);
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     width: 300px;
     padding: 20px;
     text-align: left;
@@ -437,10 +453,14 @@ html, body {
     gap: 20px;
 }
 .use-case {
-    background-color: rgba(255, 255, 255, 0.8);
-    border: 3px solid #2196F3;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    box-shadow:
+            0 0 6px  rgba(64, 207, 255, 0.8),
+            0 0 9px  rgba(64, 207, 255, 0.6),
+            0 0 12px rgba(64, 207, 255, 0.4),
+            0 0 15px rgba(64, 207, 255, 0.2);
     border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     width: 300px;
     padding: 20px;
     text-align: left;
