@@ -1,0 +1,64 @@
+/* use-cases.css */
+
+/* Use Cases */
+.use-cases-section {
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+    width: 80%;
+    max-width: 1200px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.use-cases-section h2 {
+    text-shadow:
+            0 0 6px   rgba(64, 207, 255, 0.8),
+            0 0 9px   rgba(64, 207, 255, 0.6),
+            0 0 12px  rgba(64, 207, 255, 0.4),
+            0 0 15px  rgba(64, 207, 255, 0.2);
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.use-cases-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+.use-case {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    box-shadow:
+            0 0 6px  rgba(64, 207, 255, 0.8),
+            0 0 9px  rgba(64, 207, 255, 0.6),
+            0 0 12px rgba(64, 207, 255, 0.4),
+            0 0 15px rgba(64, 207, 255, 0.2);
+    border-radius: 8px;
+    width: 300px;
+    padding: 20px;
+    text-align: left;
+}
+
+.use-case h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.use-case p {
+    line-height: 1.5;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Responsive Tweaks (Use Cases) */
+@media (max-width: 768px) {
+    .use-cases-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .use-case {
+        width: 80%;
+        margin-bottom: 20px;
+    }
+}

@@ -1,0 +1,61 @@
+/* header.css */
+
+/* Sticky Header */
+.site-header {
+    position: fixed;      /* makes it sticky */
+    top: 0;
+    left: 0;
+    width: calc(100% - 16px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 170px;
+    background-color: rgba(34, 34, 34, 0.6);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.4);
+    z-index: 999;
+}
+
+.header-inner {
+    width: 100%;
+    margin: 0;
+    padding: 0 60px 0 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-container a {
+    text-decoration: none;
+}
+
+.logo-icon {
+    height: 350px;
+    width: auto;
+    margin-right: 8px;
+}
+
+.header-links a {
+    color: #fff;
+    font-size: 24px;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.header-links a:hover {
+    color: #40CFFF;
+}
+
+/* Offset the main container for sticky header */
+main {
+    margin-top: 170px;
+}
+
+/* Responsive Tweaks (Header) */
+@media (max-width: 768px) {
+    .site-header {
+        height: 120px;
+    }
+    main {
+        margin-top: 120px;
+    }
+}

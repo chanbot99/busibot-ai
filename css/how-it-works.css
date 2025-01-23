@@ -1,0 +1,59 @@
+/* how-it-works.css */
+
+/* How It Works */
+.how-it-works {
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+    width: 80%;
+    max-width: 1200px;
+    margin: 50px auto;
+    text-align: center;
+}
+
+.how-it-works h2 {
+    text-shadow:
+            0 0 6px   rgba(64, 207, 255, 0.8),
+            0 0 9px   rgba(64, 207, 255, 0.6),
+            0 0 12px  rgba(64, 207, 255, 0.4),
+            0 0 15px  rgba(64, 207, 255, 0.2);
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on bigger screens */
+    gap: 20px;
+    max-width: 900px;
+    margin: 0 auto; /* center the grid container */
+}
+
+.step {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    box-shadow:
+            0 0 6px  rgba(64, 207, 255, 0.8),
+            0 0 9px  rgba(64, 207, 255, 0.6),
+            0 0 12px rgba(64, 207, 255, 0.4),
+            0 0 15px rgba(64, 207, 255, 0.2);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: left;
+}
+
+.step h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.step p {
+    line-height: 1.5;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Responsive Tweaks (How It Works) */
+@media (max-width: 768px) {
+    .steps {
+        grid-template-columns: 1fr; /* 1 column for mobile */
+    }
+}

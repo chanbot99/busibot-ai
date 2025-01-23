@@ -1,0 +1,111 @@
+/* benefits-stats.css */
+
+/* Benefits Section */
+.benefits-section {
+    width: 80%;
+    max-width: 1200px;
+    margin: 50px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 20px;
+}
+
+.benefit {
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+    flex: 1;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    box-shadow:
+            0 0 6px  rgba(64, 207, 255, 0.8),
+            0 0 9px  rgba(64, 207, 255, 0.6),
+            0 0 12px rgba(64, 207, 255, 0.4),
+            0 0 15px rgba(64, 207, 255, 0.2);
+    padding: 20px;
+    text-align: left;
+    border-radius: 0;
+}
+
+.benefit h2 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.benefit ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.benefit li {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+.benefit li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Statistics Section */
+.statistics-section {
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+    width: 80%;
+    max-width: 1200px;
+    margin: 0 auto 50px auto;
+}
+
+.statistics-box {
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    box-shadow:
+            0 0 6px  rgba(64, 207, 255, 0.8),
+            0 0 9px  rgba(64, 207, 255, 0.6),
+            0 0 12px rgba(64, 207, 255, 0.4),
+            0 0 15px rgba(64, 207, 255, 0.2);
+    border-radius: 0;
+    padding: 20px;
+}
+
+.statistics-box h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.statistics-box ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.statistics-box li {
+    position: relative;
+    margin-bottom: 8px;
+    padding-left: 24px;
+    line-height: 1.4;
+}
+.statistics-box li::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #000;
+    font-size: 1.2rem;
+}
+
+/* Responsive Tweaks (Benefits & Stats) */
+@media (max-width: 768px) {
+    .benefits-section {
+        flex-direction: column;
+        align-items: center;
+    }
+    .benefit {
+        width: 80%;
+        margin-bottom: 20px;
+    }
+}
