@@ -374,7 +374,6 @@ html, body {
 
 /* Pricing */
 .pricing-section {
-    padding: 50px 0;
     font-family: "Inter", Helvetica, Arial, sans-serif;
     width: 80%;
     max-width: 1200px;
@@ -430,7 +429,6 @@ html, body {
 
 /* Use-cases */
 .use-cases-section {
-    padding: 50px 0;
     font-family: "Inter", Helvetica, Arial, sans-serif;
     width: 80%;
     max-width: 1200px;
