@@ -3,59 +3,215 @@
 <head>
     <meta charset="UTF-8" />
     <title>Busibot AI Portfolio</title>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<!-- Particles background container -->
+<!-- Header -->
+<header class="site-header">
+    <div class="logo-container">
+        <img src="logo/FullLogo_Transparent.png" alt="Busibot Icon" class="logo-icon">
+    </div>
+</header>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-content">
+        <h1>Empower Your Business with AI Chatbots</h1>
+        <p>Revolutionize customer engagement, reduce costs, and scale effortlessly with Busibot.</p>
+        <a class="cta-button" href="#pricing">Get Started</a>
+    </div>
+</section>
+
 <div id="particles-js"></div>
 
-<!-- A relative wrapper that holds the 4 containers + arrows in absolute positions -->
+<!-- Chatbot Carousel -->
 <div class="carousel-wrapper">
-    <!-- Arrows absolutely placed or can be inside. We'll do them inside for simplicity -->
     <button class="arrow-btn" id="arrow-left">&#9664;</button>
 
-    <!-- Four containers, each one a distinct chatbot -->
+    <div class="container" id="chat-realestate">
+        <div class="header">
+            <span class="bot-title">Real Estate Bot</span>
+            <span class="online-status">Online <span class="glowing-green-circle">🟢</span></span>
+        </div>
+        <div class="messages" id="messages-realestate"></div>
+        <div class="input-area">
+            <label for="input-realestate"></label><input type="text" id="input-realestate" disabled placeholder="" />
+            <button id="send-realestate" disabled>Send</button>
+        </div>
+    </div>
+
     <div class="container" id="chat-bakery">
-        <div class="header"><span class="bot-title">Bakery Bot</span></div>
+        <div class="header">
+            <span class="bot-title">Bakery Bot</span>
+            <span class="online-status">Online <span class="glowing-green-circle">🟢</span></span>
+        </div>
         <div class="messages" id="messages-bakery"></div>
         <div class="input-area">
-            <input type="text" id="input-bakery" disabled placeholder="(Inactive)" />
+            <label for="input-bakery"></label><input type="text" id="input-bakery" disabled placeholder="" />
             <button id="send-bakery" disabled>Send</button>
         </div>
     </div>
 
     <div class="container" id="chat-boutique">
-        <div class="header"><span class="bot-title">Boutique Bot</span></div>
+        <div class="header">
+            <span class="bot-title">Boutique Bot</span>
+            <span class="online-status">Online <span class="glowing-green-circle">🟢</span></span>
+        </div>
         <div class="messages" id="messages-boutique"></div>
         <div class="input-area">
-            <input type="text" id="input-boutique" disabled placeholder="(Inactive)" />
+            <label for="input-boutique"></label><input type="text" id="input-boutique" disabled placeholder="" />
             <button id="send-boutique" disabled>Send</button>
         </div>
     </div>
 
     <div class="container" id="chat-electrical">
-        <div class="header"><span class="bot-title">Electrical Bot</span></div>
+        <div class="header">
+            <span class="bot-title">Electrical Bot</span>
+            <span class="online-status">Online <span class="glowing-green-circle">🟢</span></span>
+        </div>
         <div class="messages" id="messages-electrical"></div>
         <div class="input-area">
-            <input type="text" id="input-electrical" disabled placeholder="(Inactive)" />
+            <label for="input-electrical"></label><input type="text" id="input-electrical" disabled placeholder="" />
             <button id="send-electrical" disabled>Send</button>
-        </div>
-    </div>
-
-    <div class="container" id="chat-realestate">
-        <div class="header"><span class="bot-title">Real Estate Bot</span></div>
-        <div class="messages" id="messages-realestate"></div>
-        <div class="input-area">
-            <input type="text" id="input-realestate" disabled placeholder="(Inactive)" />
-            <button id="send-realestate" disabled>Send</button>
         </div>
     </div>
 
     <button class="arrow-btn" id="arrow-right">&#9654;</button>
 </div>
 
-<!-- Particles.js CDN -->
+<!-- Benefits -->
+<div class="benefits-section">
+    <div class="benefit">
+        <h2>1. 24/7 Customer Engagement</h2>
+        <ul>
+            <li><strong>Always Open:</strong> Operates non-stop for round-the-clock accessibility.</li>
+            <li><strong>Instant Replies:</strong> Reduces wait times and improves satisfaction.</li>
+            <li><strong>Scalable Support:</strong> Handles multiple queries simultaneously.</li>
+            <li><strong>Lead Capture:</strong> Automatically collects and organizes user data.</li>
+            <li><strong>Timely Escalations:</strong> Routes complex issues to human staff when needed.</li>
+        </ul>
+    </div>
+    <div class="benefit">
+        <h2>2. Personalized User Experience</h2>
+        <ul>
+            <li><strong>Context-Aware Responses:</strong> Tailors interactions based on user data.</li>
+            <li><strong>Multilingual Support:</strong> Breaks language barriers for a global audience.</li>
+            <li><strong>In-Depth Suggestions:</strong> Recommends products or services relevant to each user.</li>
+            <li><strong>Dynamic Promos:</strong> Displays targeted discounts and offers.</li>
+            <li><strong>Consistent Brand Voice:</strong> Maintains uniform messaging across all interactions.</li>
+        </ul>
+    </div>
+    <div class="benefit">
+        <h2>3. Cost-Effective Growth</h2>
+        <ul>
+            <li><strong>Reduced Overheads:</strong> Less reliance on 24/7 human support.</li>
+            <li><strong>High ROI Potential:</strong> Boost conversions without ballooning labor costs.</li>
+            <li><strong>Workflow Automation:</strong> Integrates easily with CRM and marketing tools.</li>
+            <li><strong>Data-Driven Insights:</strong> Captures interaction metrics for smarter decisions.</li>
+            <li><strong>Sustainable Expansion:</strong> Scale to meet demand without large overhead increases.</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Pricing -->
+<section class="pricing-section" id="pricing">
+    <h2>Simple Pricing Plans</h2>
+    <div class="pricing-container">
+        <div class="pricing-card">
+            <h3>Basic</h3>
+            <p class="price">$19/mo</p>
+            <ul>
+                <li>1 Chatbot</li>
+                <li>1,000 Messages / mo</li>
+                <li>Email Support</li>
+            </ul>
+            <button class="cta-button">Choose Plan</button>
+        </div>
+        <div class="pricing-card">
+            <h3>Pro</h3>
+            <p class="price">$49/mo</p>
+            <ul>
+                <li>3 Chatbots</li>
+                <li>5,000 Messages / mo</li>
+                <li>Priority Support</li>
+            </ul>
+            <button class="cta-button">Choose Plan</button>
+        </div>
+        <div class="pricing-card">
+            <h3>Enterprise</h3>
+            <p class="price">Custom</p>
+            <ul>
+                <li>Unlimited Chatbots</li>
+                <li>Unlimited Messages</li>
+                <li>Dedicated Manager</li>
+            </ul>
+            <button class="cta-button">Contact Us</button>
+        </div>
+    </div>
+</section>
+
+<!-- Use Cases -->
+<section class="use-cases-section">
+    <h2>Use Cases Across Industries</h2>
+    <div class="use-cases-container">
+        <div class="use-case">
+            <h3>E-commerce</h3>
+            <p>Upsell and cross-sell seamlessly while reducing cart abandonment.</p>
+        </div>
+        <div class="use-case">
+            <h3>Healthcare</h3>
+            <p>Automate appointment scheduling and patient FAQs with compliance in mind.</p>
+        </div>
+        <div class="use-case">
+            <h3>Hospitality</h3>
+            <p>Offer 24/7 guest services for quick bookings and maximum satisfaction.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics -->
+<div class="statistics-section">
+    <div class="statistics-box">
+        <h2>Key AI Chatbot Facts</h2>
+        <ul>
+            <li>
+                <strong>30&#37; Cost Reduction:</strong>
+                IBM research shows chatbots can reduce service expenses by up to 30&#37;
+                <a href="https://www.ibm.com/think/insights/unlocking-the-power-of-chatbots-key-benefits-for-businesses-and-customers/" target="_blank">(IBM)</a>
+            </li>
+            <li>
+                <strong>2.5 Billion Hours Saved:</strong>
+                Juniper estimates global businesses could save billions of human hours via automation
+                <a href="https://www.finextra.com/blogposting/14691/juniper-research-cost-and-time-savings-from-chatbots" target="_blank">(Juniper Research)</a>
+            </li>
+            <li>
+                <strong>64&#37; Value 24/7 Access:</strong>
+                Gartner found that round-the-clock service is the top chatbot feature for most users
+                <a href="https://www.gartner.com/en/newsroom/press-releases/2022-07-27-gartner-predicts-chatbots-will-become-a-primary-customer-service-channel-within-five-years" target="_blank">(Gartner)</a>
+            </li>
+            <li>
+                <strong>69&#37; Prefer Chatbots:</strong>
+                A Salesforce report notes the majority of consumers want quick, chatbot-based help
+                <a href="https://www.linkedin.com/pulse/69-consumers-prefer-chatbots-quick-communication-mathew-sweezey" target="_blank">(Salesforce)</a>
+            </li>
+            <li>
+                <strong>60&#37; More Leads:</strong>
+                Targeted chatbot interactions on landing pages can significantly increase lead capture
+                <a href="https://www.intercom.com/blog/" target="_blank">(Intercom)</a>
+            </li>
+            <li>
+                <strong>80&#37; Adoption Rate:</strong>
+                Oracle found that most businesses plan to implement or expand their use of chatbots soon
+                <a href="https://blogs.oracle.com/marketingcloud/post/should-you-be-using-chatbots-as-part-of-your-conversational-marketing-strategy" target="_blank">(Oracle)</a>
+            </li>
+        </ul>
+    </div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 <script src="script.js"></script>
 </body>
