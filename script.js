@@ -222,7 +222,7 @@ function minimizeBusibotChat() {
 
     // Re-show the "Let's Talk!" tab
     const chatTab = document.getElementById('busibot-chat-tab');
-    chatTab.style.display = 'block';
+    chatTab.style.display = 'flex';
 
     // Clear any notification badge
     const badge = document.getElementById('busibot-notification-badge');

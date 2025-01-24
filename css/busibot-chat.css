@@ -2,7 +2,8 @@
  * TAB-STYLE CHAT OPENER (BOTTOM-RIGHT)
  *************************************************************/
 
-/* The tab at the bottom-right corner */
+/* Make it a flex container so we can place “Online” on the left
+   and the green circle on the far right. */
 #busibot-chat-tab {
   font-family: "Inter", Helvetica, Arial, sans-serif;
   position: fixed;
@@ -10,16 +11,22 @@
   right: 20px;
   width: 200px;
   height: 45px;
-  line-height: 50px; /* Ensures single line text is centered vertically */
   background-color: #2196f3;
   color: #fff;
   font-size: 16px;
-  text-align: center;
   cursor: pointer;
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   z-index: 9999;
+
+  /* Use flex to distribute space */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  /* Padding for breathing room */
+  padding: 0 15px;
 }
 
 /* Optional hover effect on the tab */
@@ -43,13 +50,17 @@
   justify-content: center;
 }
 
-/* The glowing green circle should be a class, not an ID */
+/* Label for the tab (left side) */
+.tab-label {
+  line-height: 45px; /* vertically center text (or adjust as needed) */
+}
+
+/* Glowing green circle on the far right */
 .glowing-green-circle {
   width: 10px;
   height: 10px;
   background-color: #00ff00;
   border-radius: 50%;
-  margin-left: 8px; /* space between text and circle */
   box-shadow:
           0 0 6px rgba(0, 255, 0, 0.8),
           0 0 9px rgba(0, 255, 0, 0.6),
@@ -57,12 +68,10 @@
           0 0 15px rgba(0, 255, 0, 0.2);
 }
 
-
 /*************************************************************
  * CHAT WIDGET (BOTTOM-RIGHT, JUST ABOVE TAB)
  *************************************************************/
 
-/* Main Chat Container */
 #busibot-chat-widget {
   font-family: "Inter", Helvetica, Arial, sans-serif;
   position: fixed;
@@ -76,7 +85,6 @@
   display: none;
   flex-direction: column;
   z-index: 9998;
-  /* Animate the bottom property over 0.3s (optional) */
   transition: bottom 0.3s ease;
 }
 
@@ -100,21 +108,19 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
-  margin-left: 8px; /* space between text and minus button */
+  margin-left: 8px;
 }
 #busibot-minimize-btn:hover {
   color: #ccc;
 }
 
-/* The messages container that scrolls */
+/* Messages container */
 #busibot-messages {
   flex: 1;
   overflow-y: auto;
   padding: 10px;
   background-color: #f9f9f9;
 }
-
-/* Customize the scrollbar for busibot-messages */
 #busibot-messages::-webkit-scrollbar {
   width: 6px;
 }
@@ -123,7 +129,7 @@
   border-radius: 10px;
 }
 
-/* Input area at bottom of the chat widget */
+/* Input area */
 #busibot-input-area {
   display: flex;
   align-items: center;
@@ -143,7 +149,6 @@
   background: #ffffff;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
   transition: box-shadow 0.2s;
-  /* Start at 30px tall, can grow up to 150px */
   height: 30px;
   min-height: 30px;
   max-height: 150px;
@@ -199,7 +204,7 @@
   line-height: 1.4;
   word-wrap: break-word;
   box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  position: relative; /* So we can position the timestamp within or below if desired */
+  position: relative;
 }
 
 /* Bot bubble: light gray */
