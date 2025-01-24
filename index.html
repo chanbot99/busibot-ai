@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="css/how-it-works.css">
     <link rel="stylesheet" href="css/use-cases.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/busibot-chat.css">
 
     <!-- Font Awesome for LinkedIn icon -->
     <link
@@ -34,6 +35,8 @@
     />
 </head>
 <body>
+
+<audio id="notification-sound" src="sounds/notification.mp3" preload="auto"></audio>
 
 <!-- Sticky Header -->
 <header class="site-header">
@@ -71,10 +74,13 @@
         <div class="carousel-wrapper">
             <button class="arrow-btn" id="arrow-left">&#9664;</button>
 
+            <!-- Real Estate Bot -->
             <div class="container" id="chat-realestate">
                 <div class="header">
                     <span class="bot-title">Real Estate Bot</span>
-                    <span class="online-status">Online <span class="glowing-green-circle">🟢</span></span>
+                    <span class="online-status">
+                        Online <span class="glowing-green-circle">🟢</span>
+                    </span>
                 </div>
                 <div class="messages" id="messages-realestate"></div>
                 <div class="input-area">
@@ -84,10 +90,13 @@
                 </div>
             </div>
 
+            <!-- Bakery Bot -->
             <div class="container" id="chat-bakery">
                 <div class="header">
                     <span class="bot-title">Bakery Bot</span>
-                    <span class="online-status">Online <span class="glowing-green-circle">🟢</span></span>
+                    <span class="online-status">
+                        Online <span class="glowing-green-circle">🟢</span>
+                    </span>
                 </div>
                 <div class="messages" id="messages-bakery"></div>
                 <div class="input-area">
@@ -97,10 +106,13 @@
                 </div>
             </div>
 
+            <!-- Boutique Bot -->
             <div class="container" id="chat-boutique">
                 <div class="header">
                     <span class="bot-title">Boutique Bot</span>
-                    <span class="online-status">Online <span class="glowing-green-circle">🟢</span></span>
+                    <span class="online-status">
+                        Online <span class="glowing-green-circle">🟢</span>
+                    </span>
                 </div>
                 <div class="messages" id="messages-boutique"></div>
                 <div class="input-area">
@@ -110,10 +122,13 @@
                 </div>
             </div>
 
+            <!-- Electrical Bot -->
             <div class="container" id="chat-electrical">
                 <div class="header">
                     <span class="bot-title">Electrical Bot</span>
-                    <span class="online-status">Online <span class="glowing-green-circle">🟢</span></span>
+                    <span class="online-status">
+                        Online <span class="glowing-green-circle">🟢</span>
+                    </span>
                 </div>
                 <div class="messages" id="messages-electrical"></div>
                 <div class="input-area">
@@ -127,7 +142,7 @@
         </div>
     </section>
 
-    <!-- Benefits Section -->
+    <!-- Benefits -->
     <div class="benefits-section">
         <div class="benefit">
             <h2>1. 24/7 Customer Engagement</h2>
@@ -161,7 +176,7 @@
         </div>
     </div>
 
-    <!-- Pricing Section -->
+    <!-- Pricing -->
     <section class="pricing-section" id="pricing">
         <h2>Simple Pricing Plans</h2>
         <div class="pricing-container">
@@ -173,7 +188,7 @@
                     <li>1,000 Messages / mo</li>
                     <li>Email Support</li>
                 </ul>
-                <button class="cta-button">Get Started</button>
+                <button class="cta-button">Choose Plan</button>
             </div>
             <div class="pricing-card">
                 <h3>Pro</h3>
@@ -183,7 +198,7 @@
                     <li>5,000 Messages / mo</li>
                     <li>Priority Support</li>
                 </ul>
-                <button class="cta-button">Get Started</button>
+                <button class="cta-button">Choose Plan</button>
             </div>
             <div class="pricing-card">
                 <h3>Enterprise</h3>
@@ -198,30 +213,7 @@
         </div>
     </section>
 
-    <!-- How It Works (Manual Creation) -->
-    <section class="how-it-works" id="how-it-works">
-        <h2>How It Works</h2>
-        <div class="steps">
-            <div class="step">
-                <h3>1. Request a Chatbot</h3>
-                <p>Submit your information online or get in touch to discuss your needs.</p>
-            </div>
-            <div class="step">
-                <h3>2. Personalized Consultation</h3>
-                <p>We’ll schedule a call to understand your goals and gather requirements.</p>
-            </div>
-            <div class="step">
-                <h3>3. Manual Development</h3>
-                <p>Our team builds and tests your custom chatbot to ensure top performance.</p>
-            </div>
-            <div class="step">
-                <h3>4. Launch & Ongoing Support</h3>
-                <p>We help you integrate the chatbot on your site and provide continued guidance.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Use Cases Section -->
+    <!-- Use Cases -->
     <section class="use-cases-section">
         <h2>Use Cases Across Industries</h2>
         <div class="use-cases-container">
@@ -240,7 +232,7 @@
         </div>
     </section>
 
-    <!-- Statistics Section -->
+    <!-- Statistics -->
     <div class="statistics-section">
         <div class="statistics-box">
             <h2>Key AI Chatbot Facts</h2>
@@ -280,10 +272,48 @@
     </div>
 </main>
 
+<!-- Bottom-Right Chat Tab -->
+<div id="busibot-chat-tab" onclick="toggleBusibotChat()">
+  <span>
+    Online
+      <!-- Glowing circle -->
+    <span class="glowing-green-circle">🟢</span>
+  </span>
+    <div id="busibot-notification-badge" style="display: none;"></div>
+</div>
+
+
+<!-- Main Chat Container -->
+<div id="busibot-chat-widget">
+    <div id="busibot-chat-header">
+        Busibot.ai
+        <button
+                id="busibot-minimize-btn"
+                onclick="minimizeBusibotChat()"
+                title="Minimize Chat"
+        >-</button>
+    </div>
+
+    <div id="busibot-messages"></div>
+    <div id="busibot-input-area">
+        <textarea
+                id="busibot-textarea"
+                placeholder="Type a message..."
+                onkeydown="checkEnterKey(event);"
+                oninput="autoGrow(this);"
+        ></textarea>
+        <button id="busibot-send-btn" onclick="sendBusibotMessage()">Send</button>
+    </div>
+</div>
+
+
+
+
 <!-- Polished Footer -->
 <footer class="site-footer">
     <div class="footer-content">
-        <p><strong>Contact us:</strong>
+        <p>
+            <strong>Contact us:</strong>
             <a href="mailto:support@busibot.ai">support@busibot.ai</a>
         </p>
         <p>We value your data privacy and comply with GDPR guidelines.</p>

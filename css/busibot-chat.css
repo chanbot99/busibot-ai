@@ -1,0 +1,288 @@
+/*************************************************************
+ * TAB-STYLE CHAT OPENER (BOTTOM-RIGHT)
+ *************************************************************/
+
+/* The tab at the bottom-right corner */
+#busibot-chat-tab {
+  font-family: "Inter", Helvetica, Arial, sans-serif;
+  position: fixed;
+  bottom: 0;
+  right: 20px;
+  width: 200px;
+  height: 45px;
+  line-height: 50px; /* Ensures single line text is centered vertically */
+  background-color: #2196f3;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  z-index: 9999;
+  /* No need for display:flex if you're using line-height this way */
+}
+
+#glowing-green-circle {
+  width: 10px;
+  height: 10px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  margin-left: 8px; /* space between text and circle */
+
+  /* Glowing effect using box-shadow layers */
+  box-shadow:
+          0 0 6px   rgba(0, 255, 0, 0.8),
+          0 0 9px   rgba(0, 255, 0, 0.6),
+          0 0 12px  rgba(0, 255, 0, 0.4),
+          0 0 15px  rgba(0, 255, 0, 0.2);
+}
+
+#busibot-textarea {
+  flex: 1;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  outline: none;
+  background: #ffffff;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s;
+
+  /* Start at 30px tall, can grow up to 150px */
+  height: 30px;
+  min-height: 30px;
+  max-height: 150px;
+  resize: none;
+  overflow-y: hidden;
+}
+
+/* Hover/focus states, optional */
+#busibot-textarea:focus {
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.15);
+}
+
+
+/* Optional hover effect */
+#busibot-chat-tab:hover {
+  background-color: #1976d2;
+}
+
+/* Notification badge pinned top-left within the tab */
+#busibot-notification-badge {
+  position: absolute;   /* Position absolutely within #busibot-chat-tab */
+  top: -8px;               /* or top: 5px; etc. for slight offset */
+  left: -8px;              /* adjust as needed for spacing */
+  background-color: red;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 15px;
+  display: none;        /* shown via JS if new message arrives */
+  align-items: center;
+  justify-content: center;
+}
+
+/*************************************************************
+ * CHAT WIDGET (BOTTOM-RIGHT, JUST ABOVE TAB)
+ *************************************************************/
+
+/* Main Chat Container */
+#busibot-chat-widget {
+  font-family: "Inter", Helvetica, Arial, sans-serif;
+  position: fixed;
+  bottom: 2px;
+  right: 20px;
+  width: 350px;
+  height: 400px;
+  background-color: #fff;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  display: none;
+  flex-direction: column;
+  z-index: 9998;
+
+  /* Animate the bottom property over 0.3s */
+  transition: bottom 0.9s ease;
+}
+
+
+/* Header for the chat */
+#busibot-chat-header {
+  background-color: #2196f3;
+  color: #fff;
+  padding: 10px;
+  border-radius: 8px 8px 0 0;
+  font-size: 16px;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between; /* space out the content */
+  align-items: center;
+}
+
+#busibot-minimize-btn {
+  background: transparent;
+  color: #fff;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 8px; /* space between "Online" and minus button */
+}
+
+#busibot-minimize-btn:hover {
+  color: #ccc;
+}
+
+#busibot-chat-body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* (Optional) Status text in the header (e.g., "Online") */
+#busibot-chat-status {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+#busibot-chat-widget.minimized #busibot-chat-body {
+  display: none;
+}
+
+#busibot-chat-widget.minimized {
+  height: auto; /* or just let it collapse around the header */
+}
+
+/* Messages container */
+#busibot-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  background-color: #f9f9f9;
+  flex-direction: column;
+}
+
+/* Input area */
+#busibot-input-area {
+  display: flex;
+  align-items: center;
+  border-top: 1px solid #ddd;
+  background-color: #f9f9f9;
+  padding: 8px;
+}
+
+#busibot-input {
+  flex: 1;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 14px;
+  font-size: 14px;
+  outline: none;
+  background: #ffffff;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  transition: box-shadow 0.2s;
+}
+
+#busibot-input:focus {
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.15);
+}
+
+#busibot-send-btn {
+  border: none;
+  margin-left: 8px;
+  border-radius: 20px;
+  background-color: #2196f3;
+  color: #fff;
+  padding: 10px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+
+#busibot-send-btn:hover {
+  background-color: #1976d2;
+}
+
+#default-questions {
+  padding: 8px;
+  border-top: 1px solid #ddd;
+  background-color: #f3f3f3;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+#busibot-send-btn:active {
+  background-color: #0d47a1;
+  box-shadow: 0 2px 2px rgba(0,0,0,0.2);
+}
+
+#default-questions button {
+  background-color: #ececec;
+  border: none;
+  padding: 8px 12px;
+  font-size: 13px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+#default-questions button:hover {
+  background-color: #ddd;
+}
+
+/* The bubble styles */
+.bubble {
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 80%;
+  font-size: 14px;
+  line-height: 1.4;
+  word-wrap: break-word;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+/* Bot bubble: light gray */
+.message-row.bot .bubble {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+/* User bubble: darker gray */
+.message-row.user .bubble {
+  background-color: #d8d8d8;
+  color: #333;
+}
+
+/* Avatars */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  margin-right: 8px; /* default for bot & normal align */
+}
+
+#chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+#chat-messages::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+/* Each message row */
+.message-row {
+  display: flex;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+/* Reverse layout for user so avatar is on the right */
+.message-row.user {
+  flex-direction: row-reverse;
+}
+.message-row.user .avatar {
+  margin-right: 0;
+  margin-left: 8px;
+}
