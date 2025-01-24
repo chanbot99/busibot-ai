@@ -11,7 +11,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Inter Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+            rel="stylesheet"
+    >
 
     <!-- Global/Base CSS -->
     <link rel="stylesheet" href="css/base.css">
@@ -79,8 +82,8 @@
                 <div class="header">
                     <span class="bot-title">Real Estate Bot</span>
                     <span class="online-status">
-                        Online <span class="glowing-green-circle">🟢</span>
-                    </span>
+            Online <span class="glowing-green-circle">🟢</span>
+          </span>
                 </div>
                 <div class="messages" id="messages-realestate"></div>
                 <div class="input-area">
@@ -95,8 +98,8 @@
                 <div class="header">
                     <span class="bot-title">Bakery Bot</span>
                     <span class="online-status">
-                        Online <span class="glowing-green-circle">🟢</span>
-                    </span>
+            Online <span class="glowing-green-circle">🟢</span>
+          </span>
                 </div>
                 <div class="messages" id="messages-bakery"></div>
                 <div class="input-area">
@@ -111,8 +114,8 @@
                 <div class="header">
                     <span class="bot-title">Boutique Bot</span>
                     <span class="online-status">
-                        Online <span class="glowing-green-circle">🟢</span>
-                    </span>
+            Online <span class="glowing-green-circle">🟢</span>
+          </span>
                 </div>
                 <div class="messages" id="messages-boutique"></div>
                 <div class="input-area">
@@ -127,8 +130,8 @@
                 <div class="header">
                     <span class="bot-title">Electrical Bot</span>
                     <span class="online-status">
-                        Online <span class="glowing-green-circle">🟢</span>
-                    </span>
+            Online <span class="glowing-green-circle">🟢</span>
+          </span>
                 </div>
                 <div class="messages" id="messages-electrical"></div>
                 <div class="input-area">
@@ -276,12 +279,10 @@
 <div id="busibot-chat-tab" onclick="toggleBusibotChat()">
   <span>
     Online
-      <!-- Glowing circle -->
     <span class="glowing-green-circle">🟢</span>
   </span>
     <div id="busibot-notification-badge" style="display: none;"></div>
 </div>
-
 
 <!-- Main Chat Container -->
 <div id="busibot-chat-widget">
@@ -296,18 +297,15 @@
 
     <div id="busibot-messages"></div>
     <div id="busibot-input-area">
-        <textarea
-                id="busibot-textarea"
-                placeholder="Type a message..."
-                onkeydown="checkEnterKey(event);"
-                oninput="autoGrow(this);"
-        ></textarea>
+    <textarea
+            id="busibot-textarea"
+            placeholder="Type a message..."
+            onkeydown="checkEnterKey(event);"
+            oninput="autoGrow(this);"
+    ></textarea>
         <button id="busibot-send-btn" onclick="sendBusibotMessage()">Send</button>
     </div>
 </div>
-
-
-
 
 <!-- Polished Footer -->
 <footer class="site-footer">

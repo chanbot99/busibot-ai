@@ -8,7 +8,6 @@ const chatTab = document.getElementById('busibot-chat-tab');
 const chatWidget = document.getElementById('busibot-chat-widget');
 const chatMessages = document.getElementById('busibot-messages');
 const notificationBadge = document.getElementById('busibot-notification-badge');
-const userInput = document.getElementById('busibot-input');
 
 /************************************************************
  * 1) Particles.js Initialization
