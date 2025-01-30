@@ -1,235 +1,272 @@
-/*************************************************************
- * TAB-STYLE CHAT OPENER (BOTTOM-RIGHT)
- *************************************************************/
-
-/* Make it a flex container so we can place “Online” on the left
-   and the green circle on the far right. */
+/* ====================== */
+/* CHAT TAB & NOTIFICATION */
+/* ====================== */
 #busibot-chat-tab {
-  font-family: "Inter", Helvetica, Arial, sans-serif;
   position: fixed;
   bottom: 0;
   right: 20px;
-  width: 200px;
-  height: 45px;
-  background-color: #2196f3;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  border-top-left-radius: 8px;
-  border-top-right-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
   z-index: 9999;
-
-  /* Use flex to distribute space */
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  /* Padding for breathing room */
+  width: 200px;
+  height: 45px;
   padding: 0 15px;
-}
-
-/* Optional hover effect on the tab */
-#busibot-chat-tab:hover {
-  background-color: #1976d2;
-}
-
-/* Notification badge pinned top-left within the tab */
-#busibot-notification-badge {
-  position: absolute;
-  top: -8px;
-  left: -8px;
-  background-color: red;
+  background-color: #2196f3;
   color: #fff;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
+  font-family: "Open Sans", sans-serif !important;
   font-size: 15px;
-  display: none; /* shown via JS if new message arrives */
-  align-items: center;
-  justify-content: center;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-/* Label for the tab (left side) */
-.tab-label {
-  line-height: 45px; /* vertically center text (or adjust as needed) */
-}
+#busibot-chat-tab:hover { background-color: #1976d2; }
 
-/* Glowing green circle on the far right */
+.tab-label { line-height: 45px; }
+
 .glowing-green-circle {
   width: 10px;
   height: 10px;
   background-color: #00ff00;
   border-radius: 50%;
-  box-shadow:
-          0 0 6px rgba(0, 255, 0, 0.8),
-          0 0 9px rgba(0, 255, 0, 0.6),
-          0 0 12px rgba(0, 255, 0, 0.4),
-          0 0 15px rgba(0, 255, 0, 0.2);
+  box-shadow: 0 0 6px rgba(0,255,0,0.8),
+  0 0 9px rgba(0,255,0,0.6),
+  0 0 12px rgba(0,255,0,0.4),
+  0 0 15px rgba(0,255,0,0.2);
 }
 
-/*************************************************************
- * CHAT WIDGET (BOTTOM-RIGHT, JUST ABOVE TAB)
- *************************************************************/
+#busibot-notification-badge {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: red;
+  color: #fff;
+  font-size: 15px;
+  border-radius: 50%;
+}
 
+
+/* =============== */
+/* CHAT WIDGET */
+/* =============== */
 #busibot-chat-widget {
-  font-family: "Inter", Helvetica, Arial, sans-serif;
   position: fixed;
   bottom: 2px;
   right: 20px;
-  width: 350px;
-  height: 400px;
+  z-index: 9998;
+  display: none;
+  flex-direction: column;
+  width: 375px;
+  height: 600px;
   background-color: #fff;
   border-radius: 8px 8px 0 0;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  display: none;
-  flex-direction: column;
-  z-index: 9998;
+  font-family: "Open Sans", sans-serif !important;
   transition: bottom 0.3s ease;
 }
 
-/* Header for the chat */
 #busibot-chat-header {
-  background-color: #2196f3;
-  color: #fff;
-  padding: 10px;
-  border-radius: 8px 8px 0 0;
-  font-size: 16px;
-  font-weight: bold;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px;
+  background-color: #008eff;
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px 8px 0 0;
 }
 
-/* Minimize button in header */
+.busibot-header-left { display: flex; align-items: center; }
+.busibot-header-logo { width: 60px; margin-right: 8px; }
+
 #busibot-minimize-btn {
   background: transparent;
-  color: #fff;
   border: none;
+  color: #fff;
   font-size: 20px;
   cursor: pointer;
   margin-left: 8px;
+  transition: color 0.3s;
 }
-#busibot-minimize-btn:hover {
-  color: #ccc;
-}
+#busibot-minimize-btn:hover { color: #ccc; }
 
-/* Messages container */
+
+/* =============== */
+/* MESSAGES AREA */
+/* =============== */
 #busibot-messages {
   flex: 1;
-  overflow-y: auto;
   padding: 10px;
+  overflow-y: auto;
   background-color: #f9f9f9;
 }
-#busibot-messages::-webkit-scrollbar {
-  width: 6px;
-}
+#busibot-messages::-webkit-scrollbar { width: 6px; }
 #busibot-messages::-webkit-scrollbar-thumb {
   background-color: #ccc;
   border-radius: 10px;
 }
 
-/* Input area */
-#busibot-input-area {
-  display: flex;
-  align-items: center;
-  border-top: 1px solid #ddd;
-  background-color: #f9f9f9;
-  padding: 8px;
-}
-
-#busibot-textarea {
-  flex: 1;
-  border: none;
-  border-radius: 20px;
-  padding: 8px 12px;
-  font-size: 14px;
-  line-height: 1.4;
-  outline: none;
-  background: #ffffff;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-  transition: box-shadow 0.2s;
-  height: 30px;
-  min-height: 30px;
-  max-height: 150px;
-  resize: none;
-  overflow-y: hidden;
-}
-#busibot-textarea:focus {
-  box-shadow: inset 0 2px 6px rgba(0,0,0,0.15);
-}
-
-/* Send button */
-#busibot-send-btn {
-  border: none;
-  margin-left: 8px;
-  border-radius: 20px;
-  background-color: #2196f3;
-  color: #fff;
-  padding: 10px 16px;
-  font-size: 14px;
-  cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-  transition: background-color 0.2s, box-shadow 0.2s;
-}
-#busibot-send-btn:hover {
-  background-color: #1976d2;
-}
-#busibot-send-btn:active {
-  background-color: #0d47a1;
-  box-shadow: 0 2px 2px rgba(0,0,0,0.2);
-}
-
-/*************************************************************
- * MESSAGE BUBBLES
- *************************************************************/
 .message-row {
   display: flex;
   align-items: flex-end;
   margin-bottom: 12px;
 }
-.message-row.user {
-  flex-direction: row-reverse;
-}
-.message-row.user .avatar {
-  margin-left: 8px;
-  margin-right: 0;
-}
+.message-row.user { flex-direction: row-reverse; }
 
 .bubble {
-  padding: 8px 12px;
-  border-radius: 12px;
   max-width: 80%;
+  padding: 8px 12px;
   font-size: 14px;
-  line-height: 1.4;
+  line-height: 1.2;
+  border-radius: 12px;
   word-wrap: break-word;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  position: relative;
 }
+.message-row.bot .bubble { background-color: #f2f2f2; color: #333; }
+.message-row.user .bubble { background-color: #e3e3e3; color: #333; }
 
-/* Bot bubble: light gray */
-.message-row.bot .bubble {
-  background-color: #f2f2f2;
-  color: #333;
-}
-/* User bubble: darker gray */
-.message-row.user .bubble {
-  background-color: #d8d8d8;
-  color: #333;
-}
-
-/* Avatars */
 .avatar {
   width: 36px;
   height: 36px;
-  border-radius: 50%;
   margin-right: 8px;
+  border-radius: 50%;
 }
+.message-row.user .avatar { margin-left: 8px; margin-right: 0; }
 
-/* Optional timestamp styling */
 .timestamp {
   display: block;
+  margin-top: 4px;
   font-size: 12px;
   opacity: 0.6;
-  margin-top: 4px;
+}
+
+
+/* =============== */
+/* INPUT AREA */
+/* =============== */
+#busibot-input-area {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.input-with-icon {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#busibot-textarea {
+  width: 100%;
+  height: 36px;
+  padding: 0 40px 0 12px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-family: "Open Sans", sans-serif !important;
+  font-size: 14px;
+  line-height: 36px;
+  resize: none;
+  overflow: hidden;
+  outline: none;
+  box-sizing: border-box;
+}
+#busibot-textarea:focus {
+  border-color: #b3b3b3;
+}
+
+#busibot-up-arrow {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 29px;
+  height: 29px;
+  background: #f3f3f3;
+  border: none;
+  border-radius: 50%;
+  color: #d5d4d4;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+#busibot-up-arrow:hover { background: #d8d8d8; color: #a1a1a1; }
+#busibot-up-arrow:active { background: #aaa; color: #656464; }
+
+
+/* =============== */
+/* MISC COMPONENTS */
+/* =============== */
+.busibot-welcome-banner {
+  padding: 1px 2px 20px;
+  color: #333;
+  text-align: center;
+  font-family: "Open Sans", sans-serif !important;
+}
+.busibot-welcome-logo {
+  width: 180px;
+  margin: -35px auto -40px;
+}
+
+#busibot-footer-message,
+.busibot-footer-message {
+  padding: 6px;
+  color: #999;
+  font-size: 12px;
+  line-height: 1.4;
+  text-align: center;
+  font-family: "Open Sans", sans-serif;
+}
+
+.bubble p, .bubble h1, .bubble h2, .bubble h3, .bubble h4, .bubble h5, .bubble h6 {
+  margin: 0;
+  padding: 0;
+  line-height: 1.3;
+}
+
+.typing-indicator {
+  background-color: #f2f2f2;
+  color: #333;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 14px;
+  line-height: 1.4;
+  max-width: 30%;
+  position: relative;
+  margin-bottom: 10px;
+}
+
+.typing-indicator .dots {
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: #333;
+  margin: 0 2px;
+  animation: dots 1s infinite ease-in-out both;
+}
+
+.typing-indicator .dots:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.typing-indicator .dots:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes dots {
+  0%, 80%, 100% { transform: scale(0); }
+  40% { transform: scale(1); }
 }

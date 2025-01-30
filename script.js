@@ -1,6 +1,18 @@
 /************************************************************
  * 0) Global Variables & DOM Elements
  ************************************************************/
+
+// ===========================
+//  Change this to your server
+// ===========================
+const BOT_SERVER_URL = "https://busibot-monorepo.onrender.com"; // e.g. "http://localhost:8080" or "https://mydomain.com"
+
+// We'll store our thread ID for the bottom-right Busibot chat
+let busibotThreadId = localStorage.getItem('busibotThreadId') || null;
+
+// This userId was already in your code for the carousel bots
+let userId = "user-" + Math.floor(Math.random() * 100000);
+
 let chatOpen = false; // Tracks if bottom-right chat is open
 
 // DOM references for the bottom-right chat
@@ -66,6 +78,7 @@ const containerData = [
 
 // Keep track of which bot is active (center) in the carousel
 let activeIndex = 0;
+//let realEstateQuestionsShown = false;
 
 function updateCarousel() {
     containerData.forEach(d => {
@@ -109,9 +122,6 @@ arrowRight.addEventListener('click', () => {
     activeIndex = (activeIndex + 1) % containerData.length;
     updateCarousel();
 });
-
-// Basic userId for these 4 demos
-let userId = "user-" + Math.floor(Math.random() * 100000);
 
 // Event listeners for sending messages to each bot
 containerData.forEach((botData, idx) => {
@@ -164,7 +174,6 @@ function appendCarouselMessage(msgContainer, sender, text) {
     bubbleDiv.classList.add('bubble');
     bubbleDiv.textContent = text;
 
-    // Optionally, you could add a timestamp or avatars for the carousel bots
     msgContainer.appendChild(rowDiv);
     rowDiv.appendChild(bubbleDiv);
     msgContainer.scrollTop = msgContainer.scrollHeight;
@@ -176,14 +185,27 @@ function appendCarouselMessage(msgContainer, sender, text) {
  ************************************************************/
 
 /**
- * This is the remote endpoint for the official Busibot chat
- *  - DO NOT remove if you want to call this server
+ *  Thread creation: We'll call this once at startup (or first message)
+ *  to retrieve a thread_id from our Node.js server's /start endpoint.
  */
-const chatApiUrl = "https://busibot-monorepo.onrender.com/chat";
-
-// A unique user ID for the bottom-right chat
-const busibotUserId = localStorage.getItem('busibotUserId') || 'busibot-' + Date.now();
-localStorage.setItem('busibotUserId', busibotUserId);
+async function initBusibotThread() {
+    try {
+        const response = await fetch(`${BOT_SERVER_URL}/start`);
+        if (!response.ok) {
+            console.error("Error fetching /start:", response.statusText);
+            return null;
+        }
+        const data = await response.json();
+        busibotThreadId = data.thread_id;
+        // Optionally store it so we keep the same thread across refreshes
+        localStorage.setItem('busibotThreadId', busibotThreadId);
+        console.log("Thread initialized:", busibotThreadId);
+        return busibotThreadId;
+    } catch (err) {
+        console.error("Could not initialize thread:", err);
+        return null;
+    }
+}
 
 /**
  * Toggles the bottom-right chat
@@ -230,48 +252,121 @@ function minimizeBusibotChat() {
     badge.textContent = '';
 }
 
-
 /**
  * Send user message to the main Busibot.ai endpoint
+ * but now referencing /start (once) and /chat with our thread_id.
  */
+// 1) Reusable function to show "typing..." indicator
+function showTypingIndicator() {
+    const typingDiv = document.createElement('div');
+    typingDiv.classList.add('message-row', 'bot', 'typing-indicator');
+
+    typingDiv.innerHTML = `
+    <img class="avatar bot" src="./css/images/bot.png" alt="Bot Avatar" />
+    <div class="bubble typing-bubble">
+      <span class="dots"></span>
+      <span class="dots"></span>
+      <span class="dots"></span>
+    </div>
+  `;
+
+    // Then append
+    chatMessages.appendChild(typingDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+
+    return typingDiv;
+}
+
+// 2) Reusable function to reveal text character-by-character
+function typeTextBubble(fullText) {
+    return new Promise((resolve) => {
+        // Create a new message row for the bot
+        const rowDiv = document.createElement("div");
+        rowDiv.classList.add("message-row", "bot");
+
+        // Bot avatar
+        const avatarImg = document.createElement("img");
+        avatarImg.classList.add("avatar", "bot");
+        avatarImg.src = "./css/images/bot.png";
+
+        // Bubble that will fill text gradually
+        const bubbleDiv = document.createElement("div");
+        bubbleDiv.classList.add("bubble");
+
+        // Assemble
+        rowDiv.appendChild(avatarImg);
+        rowDiv.appendChild(bubbleDiv);
+        chatMessages.appendChild(rowDiv);
+
+        let index = 0;
+        // Reveal text in intervals (e.g. 30ms per char)
+        const timer = setInterval(() => {
+            bubbleDiv.textContent = fullText.slice(0, index + 1);
+            index++;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            if (index >= fullText.length) {
+                clearInterval(timer);
+                resolve(); // done typing
+            }
+        }, 30);
+    });
+}
+
 async function sendBusibotMessage() {
-    // Access the textarea by ID
     const textarea = document.getElementById('busibot-textarea');
     const text = textarea.value.trim();
     if (!text) return; // ignore if empty
 
-    // Insert user message in chat
+    // 1) Insert user message in chat
     appendMessage('user', text);
 
-    // Clear the textarea
+    // 2) Clear the textarea
     textarea.value = '';
-    textarea.style.height = '30px'; // reset to default height
 
-    // Now build the payload for your server
-    const payload = {
-        userId: busibotUserId, // or a unique ID for the user
-        message: text
-    };
+    // 3) Ensure we have a valid thread ID
+    if (!busibotThreadId) {
+        busibotThreadId = await initBusibotThread();
+        if (!busibotThreadId) {
+            appendMessage('bot', 'Error initializing chat session.');
+            return;
+        }
+    }
 
+    // 4) Show "Bot is typing..." indicator
+    const typingIndicator = showTypingIndicator();
+
+    // 5) Build payload and fetch server response
     try {
-        const response = await fetch(chatApiUrl, {
+        const payload = { thread_id: busibotThreadId, message: text };
+        const response = await fetch(`${BOT_SERVER_URL}/chat`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
 
         if (!response.ok) {
-            appendMessage('bot', 'Error connecting to server.');
+            typingIndicator.remove();
+            appendMessage('bot', 'Error communicating with the server.');
             return;
         }
+
         const data = await response.json();
-        const botReply = data.botReply || 'No reply from server.';
-        appendMessage('bot', botReply);
+        const botReply = data.response || 'No reply from server.';
+
+        // 6) Remove the typing indicator now that we have a final response
+        typingIndicator.remove();
+
+        // 7) Type out the bot's message instead of appending instantly
+        await typeTextBubble(botReply);
 
     } catch (err) {
+        console.error("Error calling /chat:", err);
+        typingIndicator.remove();
         appendMessage('bot', 'Error: Unable to reach server.');
     }
 }
+
 
 /**
  * Appends messages in the bottom-right Busibot widget
@@ -290,9 +385,16 @@ function appendMessage(sender, text) {
     // Bubble
     const bubbleDiv = document.createElement('div');
     bubbleDiv.classList.add('bubble');
-    bubbleDiv.textContent = text;
 
-    // Timestamp (HH:MM only)
+    // If it's the bot, let's format the reply with <br> tags
+    if (sender === 'bot') {
+        bubbleDiv.innerHTML = formatBotReply(text);
+    } else {
+        // For user messages, we can just do plain text
+        bubbleDiv.textContent = text;
+    }
+
+    // Timestamp
     const timestampDiv = document.createElement('div');
     timestampDiv.classList.add('timestamp');
     const now = new Date();
@@ -318,10 +420,11 @@ function appendMessage(sender, text) {
     }
 }
 
+/**
+ * Automatically grow textarea on input
+ */
 function autoGrow(textarea) {
-    // Reset height to auto so we can read the scrollHeight again
     textarea.style.height = 'auto';
-    // Set the height to the scrollHeight, plus a little extra if desired
     textarea.style.height = textarea.scrollHeight + 'px';
 }
 
@@ -348,9 +451,163 @@ function playNotificationSound() {
 /************************************************************
  * 4) Automatic Greeting after Page Load
  ************************************************************/
-window.addEventListener('load', () => {
-    // Greet user in the bottom-right chat after 2 seconds
+window.addEventListener('load', async () => {
+    // Attempt to restore a thread ID
+    if (!busibotThreadId) {
+        await initBusibotThread();
+    }
+
+    // Insert the banner *before* the first message
+    addWelcomeBanner();
+
+    // Delay a small greeting
     setTimeout(() => {
         appendMessage('bot', "I'm here to assist if you need me!");
+        // Show default questions for Real Estate bot (index 0 in containerData)
+        appendClickableQuestions(0, [
+            "What are the average home prices in my area?",
+            "Are there any open houses near me this weekend?",
+            "What’s my home’s estimated value?"
+        ]);
     }, 2000);
 });
+
+/**
+ * Appends a "user-like" message row with multiple clickable questions.
+ * @param {number} botIdx - The index in containerData for the Real Estate bot (likely 0).
+ * @param {string[]} questions - Array of default question strings.
+ */
+function appendClickableQuestions(botIdx, questions) {
+    const { messagesEl, inputEl } = containerData[botIdx];
+
+    // Create a new row
+    const rowDiv = document.createElement('div');
+    rowDiv.classList.add('message-row', 'user'); // styled as "user" for now
+
+    // Bubble container
+    const bubbleDiv = document.createElement('div');
+    bubbleDiv.classList.add('bubble', 'default-question-bubble');
+
+    // For each default question, create a clickable button
+    questions.forEach(questionText => {
+        const btn = document.createElement('button');
+        btn.classList.add('default-question-btn');
+        btn.textContent = questionText;
+
+        // When clicked, auto-fill input and send
+        btn.addEventListener('click', () => {
+            inputEl.value = questionText;
+            sendMessage(botIdx);
+            // Optional: remove these quick-questions
+            rowDiv.remove();
+        });
+        bubbleDiv.appendChild(btn);
+    });
+
+    rowDiv.appendChild(bubbleDiv);
+    messagesEl.appendChild(rowDiv);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+
+/************************************************************
+ * 5) Contact Form Modal for Pricing Section
+ ************************************************************/
+
+// DOM Elements for the Contact Form
+const contactModal = document.getElementById('contact-modal');
+const openFormButtons = document.querySelectorAll('.open-form');
+const closeFormButton = document.querySelector('.close-btn');
+const contactForm = document.getElementById('contact-form');
+
+// Open the modal when any "Get Started" button is clicked
+openFormButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        contactModal.style.display = 'block';
+    });
+});
+
+// Close the modal when the close button is clicked
+closeFormButton.addEventListener('click', () => {
+    contactModal.style.display = 'none';
+});
+
+// Close the modal when clicking outside the modal content
+window.addEventListener('click', (event) => {
+    if (event.target === contactModal) {
+        contactModal.style.display = 'none';
+    }
+});
+
+// Handle form submission
+contactForm.addEventListener('submit', async (e) => {
+    e.preventDefault(); // Prevent default form submission
+
+    // Gather form data
+    const formData = {
+        name: document.getElementById('name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        website: document.getElementById('website').value,
+        budget: document.getElementById('budget').value,
+        message: document.getElementById('message').value,
+    };
+
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.phone || !formData.budget || !formData.message) {
+        alert('Please fill out all required fields.');
+        return;
+    }
+
+    // Simulate form submission (replace with actual API call)
+    try {
+        console.log('Form Data Submitted:', formData);
+        alert('Thank you for your inquiry! We will contact you shortly.');
+        contactModal.style.display = 'none';
+        contactForm.reset();
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        alert('There was an error submitting your form. Please try again.');
+    }
+});
+
+// For the close button inside the modal
+document.querySelector('.close-btn').addEventListener('click', function() {
+    document.getElementById('contact-modal').style.display = 'none';
+});
+
+/**
+ * Safely convert a plain text string into HTML with <br> for line breaks.
+ * Minimal approach—only handles newlines.
+ * If you use user-generated content, sanitize properly.
+ */
+function formatBotReply(text) {
+    // Minimal HTML escape for safety
+    const escaped = text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+
+    // Convert to HTML using a markdown library
+    const html = marked.parse(escaped);
+    return html;
+}
+
+function addWelcomeBanner() {
+    const chatMessages = document.getElementById('busibot-messages');
+
+    // Create a container for the logo and text
+    const welcomeDiv = document.createElement('div');
+    welcomeDiv.classList.add('busibot-welcome-banner');
+
+    // Use innerHTML or create elements individually
+    welcomeDiv.innerHTML = `
+    <img src="css/logo/FullLogo_Transparent.png" alt="Busibot Logo" class="busibot-welcome-logo" />
+    <h3>Your AI Agent</h3>
+    <p>Hi, how can I help you today?</p>
+  `;
+
+    // Append to the messages container
+    chatMessages.appendChild(welcomeDiv);
+}
+

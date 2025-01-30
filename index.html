@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="css/use-cases.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/busibot-chat.css">
+    <link rel="stylesheet" href="css/form.css">
 
     <!-- Font Awesome for LinkedIn icon -->
     <link
@@ -180,41 +181,82 @@
     </div>
 
     <!-- Pricing -->
+    <!-- In index.html -->
     <section class="pricing-section" id="pricing">
-        <h2>Simple Pricing Plans</h2>
+        <h2>Tailored Chatbot Solutions</h2>
         <div class="pricing-container">
             <div class="pricing-card">
-                <h3>Basic</h3>
-                <p class="price">$19/mo</p>
+                <h3>Basic Chatbot</h3>
+                <p class="plan-description">Starter solution for small businesses</p>
                 <ul>
-                    <li>1 Chatbot</li>
-                    <li>1,000 Messages / mo</li>
-                    <li>Email Support</li>
+                    <li>- 24/7 Customer Support</li>
+                    <li>- Basic Q&A Functionality</li>
+                    <li>- Email Integration</li>
+                    <li>- Monthly Analytics Report</li>
                 </ul>
-                <button class="cta-button">Choose Plan</button>
+                <button class="cta-button open-form">Get Started</button>
             </div>
             <div class="pricing-card">
-                <h3>Pro</h3>
-                <p class="price">$49/mo</p>
+                <h3>Customized Solution</h3>
+                <p class="plan-description">Tailored to your specific needs</p>
                 <ul>
-                    <li>3 Chatbots</li>
-                    <li>5,000 Messages / mo</li>
-                    <li>Priority Support</li>
+                    <li>- Custom Workflows</li>
+                    <li>- CRM Integration</li>
+                    <li>- Multilingual Support</li>
+                    <li>- Priority Onboarding</li>
                 </ul>
-                <button class="cta-button">Choose Plan</button>
+                <button class="cta-button open-form">Get Started</button>
             </div>
             <div class="pricing-card">
-                <h3>Enterprise</h3>
-                <p class="price">Custom</p>
+                <h3>Large Operation</h3>
+                <p class="plan-description">Enterprise-grade solutions</p>
                 <ul>
-                    <li>Unlimited Chatbots</li>
-                    <li>Unlimited Messages</li>
-                    <li>Dedicated Manager</li>
+                    <li>- Unlimited Chatbots</li>
+                    <li>- Advanced AI Training</li>
+                    <li>- Dedicated Support Team</li>
+                    <li>- Custom API Integration</li>
                 </ul>
-                <button class="cta-button">Contact Us</button>
+                <button class="cta-button open-form">Get Started</button>
             </div>
         </div>
     </section>
+
+    <!-- Contact Form Modal -->
+    <div id="contact-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" aria-label="Close">
+                &times;
+            </button>
+            <h2>Get Started with Busibot</h2>
+            <form id="contact-form">
+                <div class="form-group">
+                    <input type="text" id="name" name="name" placeholder="Your Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="email" name="email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" name="phone" placeholder="Phone Number">
+                </div>
+                <div class="form-group">
+                    <input type="url" id="website" name="website" placeholder="Website URL" required>
+                </div>
+                <div class="form-group">
+                    <select id="budget" name="budget" required>
+                        <option value="">Select Budget Range (USD)</option>
+                        <option value="Under $1k">Under $1,000</option>
+                        <option value="$1k-$5k">$1,000 - $5,000</option>
+                        <option value="$5k-$10k">$5,000 - $10,000</option>
+                        <option value="Custom">Custom Enterprise Solution</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea id="message" name="message" placeholder="How can we help you?" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="cta-button">Submit Request</button>
+            </form>
+        </div>
+    </div>
 
     <!-- Use Cases -->
     <section class="use-cases-section">
@@ -285,24 +327,40 @@
 <!-- Main Chat Container -->
 <div id="busibot-chat-widget">
     <div id="busibot-chat-header">
-        Busibot.ai
+        <div class="busibot-header-left">
+            <img
+                    src="css/logo/FullLogo_Transparent_NoBuffer.png"
+                    alt="My Logo"
+                    class="busibot-header-logo"
+            />
+            <span>Your Personal AI Agent</span>
+        </div>
+
         <button
                 id="busibot-minimize-btn"
                 onclick="minimizeBusibotChat()"
                 title="Minimize Chat"
-        >-</button>
+        >
+            –
+        </button>
     </div>
 
     <div id="busibot-messages"></div>
-    <div id="busibot-input-area">
-    <textarea
-            id="busibot-textarea"
-            placeholder="Type a message..."
-            onkeydown="checkEnterKey(event);"
-            oninput="autoGrow(this);"
-    ></textarea>
-        <button id="busibot-send-btn" onclick="sendBusibotMessage()">Send</button>
+    <div id="busibot-input-area" class="input-with-icon">
+  <textarea
+          id="busibot-textarea"
+          placeholder="Message..."
+          onkeydown="checkEnterKey(event);"
+          oninput="autoGrow(this);"
+  ></textarea>
+        <button id="busibot-up-arrow" onclick="sendBusibotMessage()">&#9650;</button>
     </div>
+
+    <div id="busibot-footer-message" class="busibot-footer-message">
+        Handcrafted by Chandler from Busibot.ai
+    </div>
+
+
 </div>
 
 <!-- Polished Footer -->
@@ -320,6 +378,8 @@
         <p>&copy; 2025 Busibot AI. All Rights Reserved.</p>
     </div>
 </footer>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
 <!-- Particles.js -->
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
