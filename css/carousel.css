@@ -1,0 +1,58 @@
+/* carousel.css */
+
+/* Carousel Section */
+.carousel-section {
+    margin-top: 400px; /* adjust as needed */
+    position: relative;
+    width: 100%;
+    padding: 60px 0;
+    min-height: 400px;
+}
+
+.carousel-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.arrow-btn {
+    position: absolute;
+    background: none;
+    border: none;
+    font-size: 72px;
+    cursor: pointer;
+    color: #fff;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    transition: background-color 0.2s, opacity 0.2s;
+    z-index: 10;
+}
+
+#arrow-left {
+    top: 50%;
+    left: 140px;
+    transform: translateY(-50%);
+}
+#arrow-right {
+    top: 50%;
+    right: 140px;
+    transform: translateY(-50%);
+}
+
+.arrow-btn:hover {
+    background-color: rgba(255,255,255,0.2);
+    opacity: 1;
+}
+
+/* Responsive Tweaks (Carousel) */
+@media (max-width: 768px) {
+    #arrow-left,
+    #arrow-right {
+        left: 10px;
+        right: 10px;
+        font-size: 48px;
+        width: 50px;
+        height: 50px;
+    }
+}
