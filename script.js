@@ -541,6 +541,189 @@ function appendMessage(sender, text) {
         ? './css/images/bot.png'
         : './css/images/user.png';
 
+    } catch (err) {
+        await appendCarouselBotTypedMessage(messagesEl, "Error connecting to server.");
+    }
+}
+
+/**
+ * Appends user messages instantly
+ * (For bot messages, we do typed approach above)
+ */
+function appendCarouselMessage(msgContainer, sender, text) {
+    const rowDiv = document.createElement('div');
+    rowDiv.classList.add('message-row', sender);
+
+    const bubbleDiv = document.createElement('div');
+    bubbleDiv.classList.add('bubble');
+    bubbleDiv.textContent = text;
+
+    rowDiv.appendChild(bubbleDiv);
+    msgContainer.appendChild(rowDiv);
+    msgContainer.scrollTop = msgContainer.scrollHeight;
+}
+
+/**
+ * [Event listeners] - make sure "Send" triggers sendMessage
+ */
+containerData.forEach((botData, idx) => {
+    const { sendBtn, inputEl } = botData;
+
+    // On Send button click
+    sendBtn.addEventListener('click', () => sendMessage(idx));
+
+    // On Enter key in the input
+    inputEl.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            sendMessage(idx);
+        }
+    });
+});
+
+/************************************************************
+ * 3) Floating Bottom-Right Chat (Main Busibot.ai endpoint)
+ ************************************************************/
+async function initBusibotThread() {
+    try {
+        const response = await fetch(`${BOT_SERVER_URL}/start`);
+        if (!response.ok) {
+            console.error("Error fetching /start:", response.statusText);
+            return null;
+        }
+        const data = await response.json();
+        busibotThreadId = data.thread_id;
+        console.log("Thread initialized:", busibotThreadId);
+        return busibotThreadId;
+    } catch (err) {
+        console.error("Could not initialize thread:", err);
+        return null;
+    }
+}
+
+function toggleBusibotChat() {
+    chatOpen = !chatOpen;
+    if (chatOpen) {
+        chatWidget.style.display = 'flex';
+        chatTab.style.display = 'none';
+        notificationBadge.style.display = 'none';
+        notificationBadge.textContent = '';
+    } else {
+        chatWidget.style.display = 'none';
+        chatTab.style.display = 'block';
+    }
+}
+
+function minimizeBusibotChat() {
+    chatOpen = false;
+    chatWidget.style.display = 'none';
+    chatTab.style.display = 'flex';
+    notificationBadge.style.display = 'none';
+    notificationBadge.textContent = '';
+}
+
+function showTypingIndicator() {
+    const typingDiv = document.createElement('div');
+    typingDiv.classList.add('message-row', 'bot', 'typing-indicator');
+
+    typingDiv.innerHTML = `
+        <img class="avatar bot" src="./css/images/bot.png" alt="Bot Avatar" />
+        <div class="bubble typing-bubble">
+            <span class="dots"></span>
+            <span class="dots"></span>
+            <span class="dots"></span>
+        </div>
+    `;
+    chatMessages.appendChild(typingDiv);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return typingDiv;
+}
+
+function typeTextBubble(fullText) {
+    return new Promise((resolve) => {
+        const rowDiv = document.createElement("div");
+        rowDiv.classList.add("message-row", "bot");
+
+        const avatarImg = document.createElement("img");
+        avatarImg.classList.add("avatar", "bot");
+        avatarImg.src = "./css/images/bot.png";
+
+        const bubbleDiv = document.createElement("div");
+        bubbleDiv.classList.add("bubble");
+
+        rowDiv.appendChild(avatarImg);
+        rowDiv.appendChild(bubbleDiv);
+        chatMessages.appendChild(rowDiv);
+
+        let index = 0;
+        const timer = setInterval(() => {
+            bubbleDiv.textContent = fullText.slice(0, index + 1);
+            index++;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            if (index >= fullText.length) {
+                clearInterval(timer);
+                resolve();
+            }
+        }, 30);
+    });
+}
+
+async function sendBusibotMessage() {
+    const textarea = document.getElementById('busibot-textarea');
+    const text = textarea.value.trim();
+    if (!text) return;
+
+    appendMessage('user', text);
+    textarea.value = '';
+
+    if (!busibotThreadId) {
+        busibotThreadId = await initBusibotThread();
+        if (!busibotThreadId) {
+            appendMessage('bot', 'Error initializing chat session.');
+            return;
+        }
+    }
+
+    const typingIndicator = showTypingIndicator();
+
+    try {
+        const payload = { thread_id: busibotThreadId, message: text };
+        const response = await fetch(`${BOT_SERVER_URL}/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            typingIndicator.remove();
+            appendMessage('bot', 'Error communicating with the server.');
+            return;
+        }
+
+        const data = await response.json();
+        const botReply = data.response || 'No reply from server.';
+
+        typingIndicator.remove();
+        await typeTextBubble(botReply);
+
+    } catch (err) {
+        console.error("Error calling /chat:", err);
+        typingIndicator.remove();
+        appendMessage('bot', 'Error: Unable to reach server.');
+    }
+}
+
+function appendMessage(sender, text) {
+    const rowDiv = document.createElement('div');
+    rowDiv.classList.add('message-row', sender);
+
+    const avatarImg = document.createElement('img');
+    avatarImg.classList.add('avatar', sender);
+    avatarImg.src = (sender === 'bot')
+        ? './css/images/bot.png'
+        : './css/images/user.png';
+
     const bubbleDiv = document.createElement('div');
     bubbleDiv.classList.add('bubble');
     if (sender === 'bot') {
@@ -685,3 +868,61 @@ function appendWrappedQuestionsBubble() {
     chatMessages.appendChild(rowDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
+
+/************************************************************
+ * 5) Typing Animation for Hero Section
+ ************************************************************/
+function typeText(element, text, speed, delay = 0) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, speed);
+        }, delay);
+    });
+}
+
+async function initTypingAnimation() {
+    const titleElement = document.getElementById('typed-title');
+    const subtitleElement = document.getElementById('typed-subtitle');
+    const descriptionElement = document.getElementById('typed-description');
+
+    // Clear the text content
+    titleElement.textContent = '';
+    subtitleElement.textContent = '';
+    descriptionElement.textContent = '';
+
+    // Add the typed-text class to enable the typing animation
+    titleElement.classList.add('typed-text');
+    subtitleElement.classList.add('typed-text');
+    descriptionElement.classList.add('typed-text');
+
+    // Type the title
+    await typeText(titleElement, 'Empower Your Business with AI Chatbots', 18);
+
+    // Type the subtitle
+    await typeText(subtitleElement, 'AI-driven solutions that scale with your business', 18, 50);
+
+    // Type the description
+    await typeText(descriptionElement, 'Revolutionize customer engagement, reduce costs, and scale effortlessly with Busibot.', 20, 50);
+
+    // Remove the typed-text class from all elements
+    titleElement.classList.remove('typed-text');
+    subtitleElement.classList.remove('typed-text');
+    descriptionElement.classList.remove('typed-text');
+
+    // Add the caret class only to the description element
+    descriptionElement.classList.add('caret');
+}
+
+// Initialize the typing animation when the page loads
+window.addEventListener('load', () => {
+    initTypingAnimation();
+});

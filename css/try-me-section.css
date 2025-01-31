@@ -1,0 +1,53 @@
+/* Define the custom font */
+@font-face {
+    font-family: 'cyberbang'; /* Name your font */
+    src: url('/css/font/Cyberbang-7O9OB.woff2') format('woff2'), /* Modern browsers */
+    url('/css/font/Cyberbang-7O9OB.woff') format('woff'); /* Older browsers */
+    font-weight: normal; /* Adjust if your font has different weights */
+    font-style: normal; /* Adjust if your font has different styles */
+}
+
+/* Try Me Section */
+.try-me-section {
+    font-family: 'cyberbang', Arial, sans-serif; /* Use custom font with fallback */
+    text-align: center; /* Center the text and arrow */
+    margin-top: -130px; /* No space above the section */
+    color: white; /* White text color */
+    font-weight: 500; /* Medium font weight */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px; /* Space between text and arrow */
+    cursor: pointer; /* Show pointer cursor on hover */
+}
+
+.try-me-text {
+    font-size: 30px; /* Adjust the font size */
+}
+
+.arrow-up {
+    font-size: 50px; /* Larger arrow size */
+    animation: bounce 1.5s infinite; /* Add a bounce animation */
+}
+
+/* Bounce Animation for Arrow */
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0); /* Start and end at the same position */
+    }
+    40% {
+        transform: translateY(-10px); /* Move up */
+    }
+    60% {
+        transform: translateY(-5px); /* Move up slightly */
+    }
+}
+
+/* Hover Effects */
+.try-me-section:hover .try-me-text {
+    color: #00c6ff; /* Change text color on hover */
+}
+
+.try-me-section:hover .arrow-up {
+    animation: bounce 0.5s infinite; /* Faster bounce on hover */
+}
