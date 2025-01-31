@@ -685,3 +685,61 @@ function appendWrappedQuestionsBubble() {
     chatMessages.appendChild(rowDiv);
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
+
+/************************************************************
+ * 5) Typing Animation for Hero Section
+ ************************************************************/
+function typeText(element, text, speed, delay = 0) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    resolve();
+                }
+            }, speed);
+        }, delay);
+    });
+}
+
+async function initTypingAnimation() {
+    const titleElement = document.getElementById('typed-title');
+    const subtitleElement = document.getElementById('typed-subtitle');
+    const descriptionElement = document.getElementById('typed-description');
+
+    // Clear the text content
+    titleElement.textContent = '';
+    subtitleElement.textContent = '';
+    descriptionElement.textContent = '';
+
+    // Add the typed-text class to enable the typing animation
+    titleElement.classList.add('typed-text');
+    subtitleElement.classList.add('typed-text');
+    descriptionElement.classList.add('typed-text');
+
+    // Type the title
+    await typeText(titleElement, 'Empower Your Business with AI Chatbots', 18);
+
+    // Type the subtitle
+    await typeText(subtitleElement, 'AI-driven solutions that scale with your business', 18, 50);
+
+    // Type the description
+    await typeText(descriptionElement, 'Revolutionize customer engagement, reduce costs, and scale effortlessly with Busibot.', 20, 50);
+
+    // Remove the typed-text class from all elements
+    titleElement.classList.remove('typed-text');
+    subtitleElement.classList.remove('typed-text');
+    descriptionElement.classList.remove('typed-text');
+
+    // Add the caret class only to the description element
+    descriptionElement.classList.add('caret');
+}
+
+// Initialize the typing animation when the page loads
+window.addEventListener('load', () => {
+    initTypingAnimation();
+});

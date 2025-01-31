@@ -4,7 +4,7 @@
 .hero-section {
     position: relative;
     width: 100%;
-    min-height: 300px;
+    min-height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -21,7 +21,7 @@
 .hero-content h1 {
     font-family: "Inter", Helvetica, Arial, sans-serif;
     font-weight: 700;
-    font-size: 2.5rem;
+    font-size: 2.3rem;
     margin-bottom: 20px;
 }
 
@@ -71,11 +71,40 @@
     }
     .hero-content h1 {
         font-size: 2rem;
+        margin: 0;
+        padding: 0.2em 0;
     }
     .hero-content h2 {
         font-size: 1.2rem;
+        margin: 0;
+        padding: 0.2em 0;
     }
     .hero-content p {
         font-size: 1rem;
+        margin: 0;
+        padding: 0.2em 0;
     }
+}
+
+/* Typing Animation */
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #fff; } /* Adjust the caret color */
+}
+
+.typed-text {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    height: 1.2em; /* Set a fixed height based on the font size */
+}
+
+.caret {
+    border-right: 2px solid #fff; /* Adjust the caret color */
+    animation: blink-caret 0.75s step-end infinite;
 }
