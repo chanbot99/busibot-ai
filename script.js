@@ -715,7 +715,6 @@ async function initTypingAnimation() {
     titleElement.textContent = '';
     subtitleElement.textContent = '';
     descriptionElement.textContent = '';
-
     // Add the typed-text class to enable the typing animation
     titleElement.classList.add('typed-text');
     subtitleElement.classList.add('typed-text');
