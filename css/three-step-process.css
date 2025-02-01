@@ -1,0 +1,62 @@
+/* three-step-process: A section below the try-me-section */
+.three-step-process {
+    font-family: "Inter", Helvetica, Arial, sans-serif;
+    width: 80%;
+    max-width: 1200px;
+    margin: 50px auto;       /* space above & below */
+    text-align: center;
+}
+
+.three-step-process h2 {
+    text-shadow:
+            0 0 6px   rgba(64, 207, 255, 0.8),
+            0 0 9px   rgba(64, 207, 255, 0.6),
+            0 0 12px  rgba(64, 207, 255, 0.4),
+            0 0 15px  rgba(64, 207, 255, 0.2);
+    font-size: 2rem;
+    margin-bottom: 30px;
+}
+
+.three-step-container {
+    display: flex;
+    flex-wrap: wrap;         /* wrap on smaller screens */
+    justify-content: center; /* center all boxes horizontally */
+    gap: 20px;               /* space between boxes */
+}
+
+.process-step {
+    background-color: rgba(255, 255, 255, 0.9);
+    border: none;
+    box-shadow:
+            0 0 6px  rgba(64, 207, 255, 0.8),
+            0 0 9px  rgba(64, 207, 255, 0.6),
+            0 0 12px rgba(64, 207, 255, 0.4),
+            0 0 15px rgba(64, 207, 255, 0.2);
+    border-radius: 8px;
+    width: 320px;  /* adjust to your liking */
+    padding: 20px;
+    text-align: left;
+}
+
+.process-step h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.process-step p {
+    line-height: 1.5;
+    font-size: 1rem;
+    margin: 0;
+}
+
+/* Make them stack nicely on tablets or small screens */
+@media (max-width: 768px) {
+    .three-step-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .process-step {
+        width: 80%;
+        margin-bottom: 20px;
+    }
+}
