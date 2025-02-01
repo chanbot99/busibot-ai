@@ -105,8 +105,8 @@
 
 .pricing-card .cta-button {
     margin-top: auto; /* Push the button to the bottom */
-    width: 80%; /* Set a fixed width for the button */
-    text-align: center; /* Center button text */
+    width: 80%;
+    text-align: center;
 }
 
 .pricing-card .price {
@@ -119,8 +119,8 @@
     list-style: none;
     padding: 0;
     margin: 0 0 20px 0;
-    text-align: left; /* Align list items to the left */
-    width: 100%; /* Ensure the list takes full width */
+    text-align: left;
+    width: 100%;
 }
 
 .pricing-card li {

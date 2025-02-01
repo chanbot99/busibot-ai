@@ -64,7 +64,6 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* Responsive Tweaks (Hero) */
 @media (max-width: 768px) {
     .hero-section {
         padding: 60px 20px;
@@ -81,7 +80,7 @@
     }
     .hero-content p {
         font-size: 1rem;
-        margin: 0;
+        margin: 0 0 1.2em; /* <-- restore some bottom space */
         padding: 0.2em 0;
     }
 }
@@ -94,17 +93,17 @@
 
 @keyframes blink-caret {
     from, to { border-color: transparent; }
-    50% { border-color: #fff; } /* Adjust the caret color */
+    50% { border-color: #fff; }
 }
 
 .typed-text {
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
-    height: 1.2em; /* Set a fixed height based on the font size */
+    height: 1.2em;
 }
 
 .caret {
-    border-right: 2px solid #fff; /* Adjust the caret color */
+    border-right: 2px solid #fff;
     animation: blink-caret 0.75s step-end infinite;
 }

@@ -2,10 +2,10 @@
 
 /* Sticky Header */
 .site-header {
-    position: fixed;      /* makes it sticky */
+    position: fixed;
     top: 0;
     left: 0;
-    width: calc(100% - 16px);
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -32,6 +32,7 @@
     color: #fff;
 }
 
+/* On large desktops (above 992px), logo is 350px tall */
 .logo-icon {
     height: 350px;
     width: auto;
@@ -43,8 +44,8 @@
     font-size: 24px;
     text-decoration: none;
     transition: color 0.2s;
+    margin-left: 15px;
 }
-
 .header-links a:hover {
     color: #40CFFF;
 }
@@ -54,12 +55,38 @@ main {
     margin-top: 170px;
 }
 
-/* Responsive Tweaks (Header) */
-@media (max-width: 768px) {
+/* ------- Tablet breakpoint (below 992px) ------- */
+@media (max-width: 992px) {
     .site-header {
-        height: 120px;
+        height: auto;
+        padding: 10px 0;
     }
+    .header-inner {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    /* Make the logo bigger than it was on desktop */
+    .logo-icon {
+        height: 205px; /* Choose your desired “big” size */
+    }
+
+    /* Adjust main offset so content doesn't overlap the bigger header */
     main {
-        margin-top: 120px;
+        margin-top: 280px; /* Tweak as needed */
+    }
+}
+
+@media (max-width: 600px) {
+    /* Make the header non-sticky */
+    .site-header {
+        position: static; /* or 'relative' */
+        box-shadow: none; /* optional: remove the fixed header’s shadow */
+    }
+
+    /* If you had margin-top on main to offset the sticky header,
+       set it to 0 so content sits right under the header. */
+    main {
+        margin-top: 0;
     }
 }
