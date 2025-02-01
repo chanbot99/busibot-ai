@@ -78,15 +78,53 @@ main {
 }
 
 @media (max-width: 600px) {
-    /* Make the header non-sticky */
+    /* Let the header expand naturally instead of a fixed height */
     .site-header {
-        position: static; /* or 'relative' */
-        box-shadow: none; /* optional: remove the fixed header’s shadow */
+        position: static;
+        height: auto;
+        padding: 10px 0;
     }
 
-    /* If you had margin-top on main to offset the sticky header,
-       set it to 0 so content sits right under the header. */
+    /* Stack children (logo, nav) vertically and center them */
+    .header-inner {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center; /* horizontally center if there's extra space */
+        padding: 0; /* optional: remove default padding */
+    }
+
+    /* Make the logo a bit smaller (or keep it whatever size you want) */
+    .logo-icon {
+        height: 220px;  /* e.g. smaller for phones */
+        margin-bottom: 10px; /* small gap below the logo */
+    }
+
+    /* Center the nav links + US info horizontally in a row */
+    .header-links {
+        display: flex;
+        flex-direction: row; /* place icon + text side by side */
+        align-items: center;
+        justify-content: center; /* horizontally center them */
+        margin-top: -30px;      /* remove extra spacing */
+        gap: 10px;          /* space between icon and text */
+    }
+
+    /* LinkedIn icon: smaller margins on phone */
+    .header-links a {
+        margin: 0; /* or margin: 0 5px; if you like a little left/right space */
+        font-size: 20px; /* optional: slightly smaller icon if you want */
+    }
+
+    /* Owned and Operated text + flag: center them inline */
+    .us-info {
+        display: inline-flex;
+        align-items: center;
+        margin-left: 0; /* no extra indentation */
+        /* If the text + flag look too big/small, you can tweak font-size here */
+    }
+
+    /* Ensure main content isn't hidden behind the header */
     main {
-        margin-top: 0;
+        margin-top: 0px; /* adjust as needed */
     }
 }

@@ -107,3 +107,30 @@
     border-right: 2px solid #fff;
     animation: blink-caret 0.75s step-end infinite;
 }
+
+@media (max-width: 600px) {
+
+    /* 1) Let typed text wrap (if you’re using a typed effect) */
+    .typed-text {
+        white-space: normal;  /* no longer forced onto one line */
+        word-break: break-word;
+    }
+
+    /* 2) Give hero-content some padding to avoid cutting off edges */
+    .hero-content {
+        margin: 0 auto;
+        padding: 0 16px;
+        box-sizing: border-box;
+    }
+
+    /* 3) Optionally reduce font sizes so they fit better on narrow screens */
+    .hero-content h1 {
+        font-size: 1.6rem;
+    }
+    .hero-content h2 {
+        font-size: 1.2rem;
+    }
+    .hero-content p {
+        font-size: 1rem;
+    }
+}
