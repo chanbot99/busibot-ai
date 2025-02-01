@@ -51,3 +51,9 @@
 .try-me-section:hover .arrow-up {
     animation: bounce 0.5s infinite; /* Faster bounce on hover */
 }
+
+@media (max-width: 600px) {
+    .try-me-section {
+        margin-top: -400px;
+    }
+}
