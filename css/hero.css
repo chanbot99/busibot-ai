@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #0084ff 0%, #00c6ff 100%);
+    background: linear-gradient(135deg, rgba(0, 132, 255, 0.6) 0%, rgba(0, 198, 255, 0.8) 100%);
     color: #fff;
     text-align: center;
     padding: 40px 20px;
@@ -42,7 +42,7 @@
 /* CTA Button */
 .cta-button {
     font-family: "Inter", Helvetica, Arial, sans-serif;
-    background-color: #2196F3;
+    background-color: #035b9c;
     color: #fff;
     border: none;
     border-radius: 9999px;
