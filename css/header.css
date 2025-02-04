@@ -95,17 +95,20 @@ main {
 
     /* Make the logo a bit smaller (or keep it whatever size you want) */
     .logo-icon {
-        height: 220px;  /* e.g. smaller for phones */
+        margin-top: -40px;
+        padding-left: 30px;
+        height: 250px;  /* e.g. smaller for phones */
         margin-bottom: 10px; /* small gap below the logo */
     }
 
     /* Center the nav links + US info horizontally in a row */
     .header-links {
+        padding-left: 5px;
         display: flex;
         flex-direction: row; /* place icon + text side by side */
         align-items: center;
         justify-content: center; /* horizontally center them */
-        margin-top: -30px;      /* remove extra spacing */
+        margin-top: -50px;      /* remove extra spacing */
         gap: 10px;          /* space between icon and text */
     }
 
