@@ -113,22 +113,25 @@
     /* 1) Let typed text wrap (if you’re using a typed effect) */
     .typed-text {
         white-space: normal;  /* no longer forced onto one line */
-        word-break: break-word;
+        word-break: normal;
     }
 
     /* 2) Give hero-content some padding to avoid cutting off edges */
+    .hero-section {
+        text-align: center; /* override the center text alignment */
+    }
+
     .hero-content {
-        margin: 0 auto;
-        padding: 0 16px;
+        margin: 0 24px; /* or 0 auto if you still want the block centered */
         box-sizing: border-box;
     }
 
     /* 3) Optionally reduce font sizes so they fit better on narrow screens */
     .hero-content h1 {
-        font-size: 1.6rem;
+        font-size: 1.3rem;
     }
     .hero-content h2 {
-        font-size: 1.2rem;
+        font-size: 1.0rem;
     }
     .hero-content p {
         font-size: 1rem;
