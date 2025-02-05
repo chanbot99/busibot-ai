@@ -250,6 +250,10 @@
     box-shadow: 0 4px 6px rgba(0,0,0,0.15);
 }
 
+.bubble {
+    white-space: pre-wrap;
+}
+
 /* Responsive Tweaks (Chatbot) */
 @media (max-width: 992px) {
     .container {
