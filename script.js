@@ -5,13 +5,13 @@ localStorage.removeItem('busibotThreadId');
 // ===========================
 //  Change this to your server
 // ===========================
-const BOT_SERVER_URL = "https://busibot-monorepo.onrender.com"; // e.g. "http://localhost:8080" or "https://mydomain.com"
+const BOT_SERVER_URL = "https://busibot-monorepo.onrender.com";
 
-// We'll store the Busibot thread ID separately (bottom-right chat)
-let busibotThreadId = null;
-
-// Each carousel bot will store its own threadId in containerData
+// We'll no longer track a thread ID
 let userId = "user-" + Math.floor(Math.random() * 100000);
+
+// ADDED: We'll create a new session ID each page load
+let sessionId = null;
 
 let chatOpen = false; // Tracks if bottom-right chat is open
 
@@ -45,7 +45,6 @@ particlesJS("particles-js", {
 /************************************************************
  * 2) Carousel of Demo Bots (Real Estate, Bakery, Boutique, Electrical)
  ************************************************************/
-// We removed the { label: "Contact Me!", type: "contact" } for each carousel bot.
 const containerData = [
     {
         containerEl: document.getElementById('chat-realestate'),
@@ -53,8 +52,6 @@ const containerData = [
         sendBtn: document.getElementById('send-realestate'),
         messagesEl: document.getElementById('messages-realestate'),
         endpoint: "https://busibot-demo-real-estate.onrender.com/chat",
-        startUrl: "https://busibot-demo-real-estate.onrender.com/start",
-        threadId: null,
         quickQuestions: [
             { label: "Available Properties", type: "question" },
             { label: "Schedule a Viewing", type: "question" },
@@ -68,8 +65,6 @@ const containerData = [
         sendBtn: document.getElementById('send-bakery'),
         messagesEl: document.getElementById('messages-bakery'),
         endpoint: "https://busibot-demo-bakery.onrender.com/chat",
-        startUrl: "https://busibot-demo-bakery.onrender.com/start",
-        threadId: null,
         quickQuestions: [
             { label: "Today's Specials", type: "question" },
             { label: "Vegan Options", type: "question" },
@@ -83,8 +78,6 @@ const containerData = [
         sendBtn: document.getElementById('send-boutique'),
         messagesEl: document.getElementById('messages-boutique'),
         endpoint: "https://busibot-demo-boutique.onrender.com/chat",
-        startUrl: "https://busibot-demo-boutique.onrender.com/start",
-        threadId: null,
         quickQuestions: [
             { label: "Latest Collection", type: "question" },
             { label: "Size Availability", type: "question" },
@@ -98,8 +91,6 @@ const containerData = [
         sendBtn: document.getElementById('send-electrical'),
         messagesEl: document.getElementById('messages-electrical'),
         endpoint: "https://busibot-demo-eletrical.onrender.com/chat",
-        startUrl: "https://busibot-demo-eletrical.onrender.com/start",
-        threadId: null,
         quickQuestions: [
             { label: "Schedule Repair", type: "question" },
             { label: "Electrical Upgrades", type: "question" },
@@ -109,9 +100,7 @@ const containerData = [
     }
 ];
 
-// Keep track of which bot is active (center) in the carousel
 let activeIndex = 0;
-
 function updateCarousel() {
     containerData.forEach(d => {
         d.containerEl.classList.remove('left','center','right','hidden');
@@ -129,21 +118,18 @@ function updateCarousel() {
     containerData[centerIndex].containerEl.classList.add('center');
     containerData[rightIndex].containerEl.classList.add('right');
 
-    // Hide all others
     for (let i = 0; i < len; i++) {
         if (i !== leftIndex && i !== centerIndex && i !== rightIndex) {
             containerData[i].containerEl.classList.add('hidden');
         }
     }
 
-    // Enable input & send button for active (center) bot
     containerData[centerIndex].inputEl.disabled = false;
     containerData[centerIndex].sendBtn.disabled = false;
     containerData[centerIndex].inputEl.placeholder = "Type a message...";
 }
 updateCarousel();
 
-// Carousel arrow controls
 const arrowLeft = document.getElementById('arrow-left');
 const arrowRight = document.getElementById('arrow-right');
 arrowLeft.addEventListener('click', () => {
@@ -156,59 +142,21 @@ arrowRight.addEventListener('click', () => {
 });
 
 /************************************************************
- * 2B) Initialize Thread IDs for Each Bot
+ * 2B) We remove the /start thread logic entirely
  ************************************************************/
-async function initCarouselThread(botData) {
-    // Attempt to get a thread_id from /start
-    try {
-        const response = await fetch(botData.startUrl);
-        if (!response.ok) {
-            console.error(`Error fetching /start for ${botData.startUrl}:`, response.statusText);
-            return null;
-        }
-        const data = await response.json();
-        botData.threadId = data.thread_id;
-        console.log(`${botData.startUrl} => Thread ID:`, botData.threadId);
-    } catch (err) {
-        console.error(`Could not initialize thread for ${botData.startUrl}:`, err);
-        botData.threadId = null;
-    }
-}
-
-// Initialize all carousel bot threads
-async function initAllCarouselThreads() {
-    for (const botData of containerData) {
-        await initCarouselThread(botData);
-    }
-}
 
 /************************************************************
  * 2C) Bot Initialization & UI
  ************************************************************/
-// For each bot, we show a welcome + question bubbles
 containerData.forEach((botData) => {
     initCarouselBot(botData);
 });
 
-// Also do thread creation on page load so they have an ID ready
-window.addEventListener('load', async () => {
-    // Initialize each bot's thread
-    await initAllCarouselThreads();
-});
-
-/**
- * Initialize each carousel bot UI:
- * - Adds a welcome banner
- * - Delays then greets user
- * - Adds quick question bubbles
- */
 function initCarouselBot(botData) {
-    // 1) Add a custom welcome banner at the top
     addWelcomeBannerToCarousel(botData.messagesEl);
-
-    // 2) Short delay, then greet user + show question bubbles
     setTimeout(() => {
-        appendCarouselBotTypedMessage(botData.messagesEl,
+        appendCarouselBotTypedMessage(
+            botData.messagesEl,
             "👋 Hello, I'm your AI assistant! How can I help you today?"
         ).then(() => {
             appendWrappedQuestionsBubbleToCarousel(
@@ -221,9 +169,6 @@ function initCarouselBot(botData) {
     }, 1000);
 }
 
-/**
- * Add a "welcome banner" (like Busibot) to each carousel chat
- */
 function addWelcomeBannerToCarousel(messagesEl) {
     const welcomeDiv = document.createElement('div');
     welcomeDiv.classList.add('busibot-welcome-banner');
@@ -235,9 +180,6 @@ function addWelcomeBannerToCarousel(messagesEl) {
     messagesEl.appendChild(welcomeDiv);
 }
 
-/**
- * Creates a single row of question bubbles from the array
- */
 function appendWrappedQuestionsBubbleToCarousel(messagesEl, inputEl, sendBtn, items) {
     const rowDiv = document.createElement('div');
     rowDiv.classList.add('message-row', 'user', 'multi-question-row');
@@ -260,11 +202,7 @@ function appendWrappedQuestionsBubbleToCarousel(messagesEl, inputEl, sendBtn, it
     messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-/**
- * Show "typing..." indicator, then type out the bot's text (with an avatar)
- */
 async function appendCarouselBotTypedMessage(messagesEl, fullText) {
-    // 1) Show typing indicator (includes an avatar)
     const typingIndicator = document.createElement('div');
     typingIndicator.classList.add('message-row', 'bot', 'typing-indicator');
     typingIndicator.innerHTML = `
@@ -278,16 +216,11 @@ async function appendCarouselBotTypedMessage(messagesEl, fullText) {
     messagesEl.appendChild(typingIndicator);
     messagesEl.scrollTop = messagesEl.scrollHeight;
 
-    // 2) small delay to simulate "thinking"
     await new Promise(resolve => setTimeout(resolve, 800));
-
-    // 3) remove typing indicator
     typingIndicator.remove();
 
-    // 4) type out the text
     const rowDiv = document.createElement("div");
     rowDiv.classList.add("message-row", "bot");
-
     const bubbleDiv = document.createElement("div");
     bubbleDiv.classList.add("bubble");
 
@@ -302,7 +235,6 @@ async function appendCarouselBotTypedMessage(messagesEl, fullText) {
 
         if (index >= fullText.length) {
             clearInterval(timer);
-            // (Optional) add a timestamp
             const timestampDiv = document.createElement('div');
             timestampDiv.classList.add('timestamp');
             timestampDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -316,34 +248,27 @@ async function appendCarouselBotTypedMessage(messagesEl, fullText) {
  */
 async function sendMessage(botIdx) {
     const botData = containerData[botIdx];
-    const { inputEl, messagesEl, endpoint, threadId } = botData;
+    const { inputEl, messagesEl, endpoint } = botData;
 
     if (inputEl.disabled) return;
     const text = inputEl.value.trim();
     if (!text) return;
 
-    // Append user's message instantly
     appendCarouselMessage(messagesEl, "user", text);
     inputEl.value = "";
 
-    // If no threadId, attempt to re-initialize
-    if (!threadId) {
-        console.warn("No thread ID found for this bot. Attempting to initialize...");
-        await initCarouselThread(botData);
-    }
-
     try {
-        const payload = {
-            userId,
-            message: text,
-            thread_id: botData.threadId || null
-        };
-
+        console.log("Sending request with sessionId:", sessionId); // Debugging
+        const payload = { userId, message: text };
         const res = await fetch(endpoint, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'x-session-id': sessionId // Ensure this matches the backend's expected header
+            },
             body: JSON.stringify(payload)
         });
+
         if (!res.ok) {
             await appendCarouselBotTypedMessage(messagesEl, "Error communicating with server.");
             return;
@@ -352,21 +277,15 @@ async function sendMessage(botIdx) {
         const data = await res.json();
         console.log(data);
 
-        // If your server uses data.response for the AI text:
-        const botReply = data.response || "No reply received.";
-
-        // type out the final text with a typing indicator
+        const botReply = data.content || "No reply received.";
         await appendCarouselBotTypedMessage(messagesEl, botReply);
 
     } catch (err) {
+        console.error("Error connecting to server:", err);
         await appendCarouselBotTypedMessage(messagesEl, "Error connecting to server.");
     }
 }
 
-/**
- * Appends user messages instantly
- * (For bot messages, we do typed approach above)
- */
 function appendCarouselMessage(msgContainer, sender, text) {
     const rowDiv = document.createElement('div');
     rowDiv.classList.add('message-row', sender);
@@ -380,16 +299,10 @@ function appendCarouselMessage(msgContainer, sender, text) {
     msgContainer.scrollTop = msgContainer.scrollHeight;
 }
 
-/**
- * [Event listeners] - make sure "Send" triggers sendMessage
- */
+// [Event listeners] for each carousel
 containerData.forEach((botData, idx) => {
     const { sendBtn, inputEl } = botData;
-
-    // On Send button click
     sendBtn.addEventListener('click', () => sendMessage(idx));
-
-    // On Enter key in the input
     inputEl.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             e.preventDefault();
@@ -401,23 +314,6 @@ containerData.forEach((botData, idx) => {
 /************************************************************
  * 3) Floating Bottom-Right Chat (Main Busibot.ai endpoint)
  ************************************************************/
-async function initBusibotThread() {
-    try {
-        const response = await fetch(`${BOT_SERVER_URL}/start`);
-        if (!response.ok) {
-            console.error("Error fetching /start:", response.statusText);
-            return null;
-        }
-        const data = await response.json();
-        busibotThreadId = data.thread_id;
-        console.log("Thread initialized:", busibotThreadId);
-        return busibotThreadId;
-    } catch (err) {
-        console.error("Could not initialize thread:", err);
-        return null;
-    }
-}
-
 function toggleBusibotChat() {
     chatOpen = !chatOpen;
     if (chatOpen) {
@@ -442,7 +338,6 @@ function minimizeBusibotChat() {
 function showTypingIndicator() {
     const typingDiv = document.createElement('div');
     typingDiv.classList.add('message-row', 'bot', 'typing-indicator');
-
     typingDiv.innerHTML = `
         <img class="avatar bot" src="./css/images/bot.png" alt="Bot Avatar" />
         <div class="bubble typing-bubble">
@@ -494,39 +389,34 @@ async function sendBusibotMessage() {
     appendMessage('user', text);
     textarea.value = '';
 
-    if (!busibotThreadId) {
-        busibotThreadId = await initBusibotThread();
-        if (!busibotThreadId) {
-            appendMessage('bot', 'Error initializing chat session.');
-            return;
-        }
-    }
-
     const typingIndicator = showTypingIndicator();
 
     try {
-        const payload = { thread_id: busibotThreadId, message: text };
+        // ADDED: "sessionid" in request header
+        const payload = { message: text };
         const response = await fetch(`${BOT_SERVER_URL}/chat`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'sessionid': sessionId
+            },
             body: JSON.stringify(payload)
         });
 
+        typingIndicator.remove();
+
         if (!response.ok) {
-            typingIndicator.remove();
             appendMessage('bot', 'Error communicating with the server.');
             return;
         }
 
         const data = await response.json();
         const botReply = data.response || 'No reply from server.';
-
-        typingIndicator.remove();
         await typeTextBubble(botReply);
 
     } catch (err) {
-        console.error("Error calling /chat:", err);
         typingIndicator.remove();
+        console.error("Error calling /chat:", err);
         appendMessage('bot', 'Error: Unable to reach server.');
     }
 }
@@ -543,13 +433,8 @@ function appendMessage(sender, text) {
 
     const bubbleDiv = document.createElement('div');
     bubbleDiv.classList.add('bubble');
-    if (sender === 'bot') {
-        bubbleDiv.innerHTML = formatBotReply(text);
-    } else {
-        bubbleDiv.textContent = text;
-    }
+    bubbleDiv.textContent = text;
 
-    // Timestamp
     const timestampDiv = document.createElement('div');
     timestampDiv.classList.add('timestamp');
     timestampDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -591,17 +476,13 @@ function playNotificationSound() {
 /************************************************************
  * 4) Automatic Greeting after Page Load
  ************************************************************/
-window.addEventListener('load', async () => {
-    // If bottom-right Busibot doesn't have a thread yet, initialize it:
-    if (!busibotThreadId) {
-        await initBusibotThread();
-    }
+window.addEventListener('load', () => {
+    sessionId = Date.now() + "-" + Math.random().toString(36).substring(2);
+    console.log("Session ID initialized:", sessionId); // Debugging
 
     addWelcomeBanner();
-
     setTimeout(() => {
         appendMessage('bot', "👋 I'm here to assist if you need me!");
-        // Busibot (bottom-right) still uses these same 5 questions:
         appendWrappedQuestionsBubble();
     }, 2000);
 });
@@ -610,14 +491,12 @@ const contactModal = document.getElementById('contact-modal');
 const openFormButtons = document.querySelectorAll('.open-form');
 const closeFormButton = document.querySelector('.close-btn');
 
-// Open the modal
 openFormButtons.forEach(button => {
     button.addEventListener('click', () => {
         contactModal.style.display = 'block';
     });
 });
 
-// Close modal
 closeFormButton.addEventListener('click', () => {
     contactModal.style.display = 'none';
 });
@@ -626,15 +505,6 @@ window.addEventListener('click', (event) => {
         contactModal.style.display = 'none';
     }
 });
-
-function formatBotReply(text) {
-    const escaped = text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;");
-    const html = marked.parse(escaped);
-    return html;
-}
 
 function addWelcomeBanner() {
     const welcomeDiv = document.createElement('div');
@@ -648,8 +518,7 @@ function addWelcomeBanner() {
 }
 
 /**
- * The Busibot (bottom-right) STILL uses these 5 quick questions,
- * which remain unchanged.
+ * The Busibot (bottom-right) STILL uses these 5 quick questions
  */
 function appendWrappedQuestionsBubble() {
     const items = [
@@ -711,34 +580,23 @@ async function initTypingAnimation() {
     const subtitleElement = document.getElementById('typed-subtitle');
     const descriptionElement = document.getElementById('typed-description');
 
-    // Clear the text content
     titleElement.textContent = '';
     subtitleElement.textContent = '';
     descriptionElement.textContent = '';
-    // Add the typed-text class to enable the typing animation
     titleElement.classList.add('typed-text');
     subtitleElement.classList.add('typed-text');
     descriptionElement.classList.add('typed-text');
 
-    // Type the title
     await typeText(titleElement, 'Empower Your Business with AI Chatbots', 18);
-
-    // Type the subtitle
     await typeText(subtitleElement, 'AI-driven solutions that scale with your business', 18, 50);
-
-    // Type the description
     await typeText(descriptionElement, 'Revolutionize customer engagement, reduce costs, and scale effortlessly with Busibot.', 20, 50);
 
-    // Remove the typed-text class from all elements
     titleElement.classList.remove('typed-text');
     subtitleElement.classList.remove('typed-text');
     descriptionElement.classList.remove('typed-text');
-
-    // Add the caret class only to the description element
     descriptionElement.classList.add('caret');
 }
 
-// Initialize the typing animation when the page loads
 window.addEventListener('load', () => {
     initTypingAnimation();
 });
