@@ -146,17 +146,6 @@
     display: inline-block;
 }
 
-.bot-message {
-    background-color: #f2f2f2;
-    color: #333;
-    margin-right: auto;
-}
-.user-message {
-    background-color: #d8d8d8;
-    color: #333;
-    margin-left: auto;
-}
-
 .input-area {
     font-family: "Open Sans", sans-serif !important;
     display: flex;
@@ -274,4 +263,137 @@
         width: 90%;
         height: 400px;
     }
+}
+
+/* Dark Mode Styles */
+[data-theme="dark"] {
+    --chat-bg: #1a1a1a;
+    --chat-text: #ffffff;
+    --message-bg: #2d2d2d;
+    --input-bg: #333333;
+}
+
+/* Theme Toggle Styles */
+.theme-toggle-container {
+    display: flex;
+    justify-content: right;
+    margin: 1rem 15px;
+}
+
+.theme-toggle {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #f0f0f0;
+    border: none;
+    border-radius: 2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: #e0e0e0;
+}
+
+.toggle-slider {
+    display: block;
+    width: 40px;
+    height: 20px;
+    background: #cccccc;
+    border-radius: 10px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .toggle-slider {
+    background: #4d4d4d;
+}
+
+[data-theme="dark"] .toggle-slider::before {
+    transform: translateX(20px);
+    background: #1a1a1a;
+}
+
+/* Update Chatbot Colors - Preserve Glow */
+[data-theme="dark"] .container {
+    background-color: var(--chat-bg);
+    /* Remove the box-shadow: none !important; line */
+}
+
+/* Specific box-shadow colors per bot in dark mode */
+[data-theme="dark"] #chat-bakery.container {
+    box-shadow:
+            0 0 12px  rgba(44, 44, 44, 0.8),
+            0 0 16px  rgba(44, 44, 44, 0.6),
+            0 0 20px rgba(44, 44, 44, 0.4),
+            0 0 25px rgba(44, 44, 44, 0.2);
+}
+
+[data-theme="dark"] #chat-boutique.container {
+    box-shadow:
+            0 0 12px  rgba(47, 62, 45, 0.8),
+            0 0 16px  rgba(47, 62, 45, 0.6),
+            0 0 20px rgba(47, 62, 45, 0.4),
+            0 0 25px rgba(47, 62, 45, 0.2);
+}
+
+[data-theme="dark"] #chat-electrical.container {
+    box-shadow:
+            0 0 12px  rgba(36, 43, 77, 0.8),
+            0 0 16px  rgba(36, 43, 77, 0.6),
+            0 0 20px rgba(36, 43, 77, 0.4),
+            0 0 25px rgba(36, 43, 77, 0.2);
+}
+
+[data-theme="dark"] #chat-realestate.container {
+    box-shadow:
+            0 0 12px  rgba(0, 132, 255, 0.8),
+            0 0 16px  rgba(0, 132, 255, 0.6),
+            0 0 20px rgba(0, 132, 255, 0.4),
+            0 0 25px rgba(0, 132, 255, 0.2);
+}
+
+/* Update other dark mode styles */
+[data-theme="dark"] .messages {
+    background-color: var(--chat-bg);
+    color: var(--chat-text);
+}
+
+[data-theme="dark"] .bot-message {
+    background-color: var(--message-bg);
+    color: var(--chat-text);
+}
+
+[data-theme="dark"] .user-message {
+    background-color: var(--message-bg);
+    color: var(--chat-text);
+}
+
+[data-theme="dark"] .input-area {
+    background-color: var(--input-bg);
+    border-color: #404040;
+}
+
+[data-theme="dark"] .input-area input[type="text"] {
+    background-color: #262626;
+    color: var(--chat-text);
+}
+
+[data-theme="dark"] .input-area input[type="text"] {
+    background-color: #262626;
+    color: var(--chat-text);
 }

@@ -142,3 +142,39 @@
         margin-bottom: 20px;
     }
 }
+
+[data-theme="dark"] {
+    --pricing-bg: #1a1a1a;
+    --pricing-text: #ffffff;
+    --pricing-card-bg: #2d2d2d;
+    --pricing-card-border: #404040;
+    --pricing-description: #b3b3b3;
+    --modal-bg: #2d2d2d;
+    --modal-text: #ffffff;
+    --input-bg: #333333;
+    --input-border: #555555;
+    --input-text: #ffffff;
+}
+
+/* Pricing Section - Dark Mode */
+[data-theme="dark"] .pricing-section {
+    color: var(--pricing-text);
+}
+
+[data-theme="dark"] .plan-description {
+    color: var(--pricing-description);
+}
+
+[data-theme="dark"] .pricing-card {
+    background-color: var(--pricing-card-bg);
+    color: var(--pricing-text);
+    border: 1px solid var(--pricing-card-border);
+}
+
+[data-theme="dark"] .pricing-card ul {
+    color: var(--pricing-text);
+}
+
+[data-theme="dark"] .pricing-card li {
+    color: var(--pricing-text);
+}

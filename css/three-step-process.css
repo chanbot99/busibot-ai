@@ -60,3 +60,13 @@
         margin-bottom: 20px;
     }
 }
+
+[data-theme="dark"] .three-step-process {
+    color: var(--pricing-text);
+}
+
+[data-theme="dark"] .process-step {
+    background-color: var(--pricing-card-bg);
+    color: var(--pricing-text);
+    border: 1px solid var(--pricing-card-border);
+}

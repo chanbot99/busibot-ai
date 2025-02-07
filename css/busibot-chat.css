@@ -358,3 +358,108 @@
   transform: translateY(-1px);
   box-shadow: 0 4px 6px rgba(0,0,0,0.15);
 }
+
+/* ====================== */
+/* DARK MODE OVERRIDES */
+/* ====================== */
+[data-theme="dark"] {
+  --chat-tab-bg: #1f2940;
+  --chat-tab-text: #ffffff;
+  --chat-widget-bg: #1f1f1f;
+  --chat-header-bg: #2d2d2d;
+  --messages-bg: #141414;
+  --input-bg: #262626;
+  --input-border: #404040;
+  --bot-bubble: #2d2d2d;
+  --user-bubble: #3d3d3d;
+  --typing-bg: #2d2d2d;
+  --footer-text: #888;
+}
+
+[data-theme="dark"] #busibot-chat-tab {
+  background-color: var(--chat-tab-bg);
+  color: var(--chat-tab-text);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}
+
+[data-theme="dark"] #busibot-chat-tab:hover {
+  background-color: #252525;
+}
+
+[data-theme="dark"] #busibot-chat-widget {
+  background-color: var(--chat-widget-bg);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+[data-theme="dark"] #busibot-chat-header {
+  background-color: var(--chat-header-bg);
+}
+
+[data-theme="dark"] #busibot-messages {
+  background-color: var(--messages-bg);
+}
+
+[data-theme="dark"] #busibot-messages::-webkit-scrollbar-thumb {
+  background-color: #555;
+}
+
+[data-theme="dark"] .message-row.bot .bubble {
+  background-color: var(--bot-bubble);
+  color: var(--chat-tab-text);
+}
+
+[data-theme="dark"] .message-row.user .bubble {
+  background-color: var(--user-bubble);
+  color: var(--chat-tab-text);
+}
+
+[data-theme="dark"] #busibot-input-area {
+  background-color: var(--input-bg);
+  border-top: 1px solid var(--input-border);
+}
+
+[data-theme="dark"] #busibot-textarea {
+  background-color: #333;
+  border-color: var(--input-border);
+  color: var(--chat-tab-text);
+}
+
+[data-theme="dark"] #busibot-up-arrow {
+  background: #3d3d3d;
+  color: #666;
+}
+[data-theme="dark"] #busibot-up-arrow:hover {
+  background: #4d4d4d;
+  color: #888;
+}
+
+[data-theme="dark"] .busibot-welcome-banner {
+  color: var(--chat-tab-text);
+}
+
+[data-theme="dark"] .busibot-footer-message {
+  color: var(--footer-text);
+}
+
+[data-theme="dark"] .typing-indicator {
+  background-color: var(--typing-bg);
+}
+[data-theme="dark"] .typing-indicator .dots {
+  background-color: var(--chat-tab-text);
+}
+
+[data-theme="dark"] .get-started-bubble {
+  background-color: #2d3d4d !important;
+  color: #8ab4f8 !important;
+}
+[data-theme="dark"] .get-started-bubble:hover {
+  background-color: #364d64 !important;
+}
+
+[data-theme="dark"] .question-bubble {
+  background-color: #2d3d4d;
+  color: #8ab4f8;
+}
+[data-theme="dark"] .question-bubble:hover {
+  background-color: #364d64;
+}

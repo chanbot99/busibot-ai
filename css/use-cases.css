@@ -62,3 +62,14 @@
         margin-bottom: 20px;
     }
 }
+
+[data-theme="dark"] .use-cases-section {
+    background-color: var(--pricing-bg);
+    color: var(--pricing-text);
+}
+
+[data-theme="dark"] .use-case {
+    background-color: var(--pricing-card-bg);
+    color: var(--pricing-text);
+    border: 1px solid var(--pricing-card-border);
+}

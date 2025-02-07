@@ -600,3 +600,29 @@ async function initTypingAnimation() {
 window.addEventListener('load', () => {
     initTypingAnimation();
 });
+
+// Dark Mode Toggle
+const themeToggle = document.getElementById('theme-toggle');
+const storedTheme = localStorage.getItem('theme');
+
+// Set initial theme
+if (storedTheme) {
+    document.documentElement.setAttribute('data-theme', storedTheme);
+}
+
+themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+
+    // Update toggle text
+    themeToggle.querySelector('.toggle-text').textContent =
+        newTheme === 'dark' ? 'Light Mode' : 'Dark Mode';
+});
+
+// Initialize toggle text
+if (storedTheme === 'dark') {
+    themeToggle.querySelector('.toggle-text').textContent = 'Light Mode';
+}
