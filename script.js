@@ -7,7 +7,6 @@ localStorage.removeItem('busibotThreadId');
 // ===========================
 const BOT_SERVER_URL = "https://busibot-monorepo.onrender.com";
 
-// We'll no longer track a thread ID
 let userId = "user-" + Math.floor(Math.random() * 100000);
 
 // ADDED: We'll create a new session ID each page load
@@ -259,12 +258,13 @@ async function sendMessage(botIdx) {
 
     try {
         console.log("Sending request with sessionId:", sessionId); // Debugging
+        // Same payload, same header, same response structure
         const payload = { userId, message: text };
         const res = await fetch(endpoint, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-session-id': sessionId // Ensure this matches the backend's expected header
+                'x-session-id': sessionId
             },
             body: JSON.stringify(payload)
         });
@@ -277,6 +277,7 @@ async function sendMessage(botIdx) {
         const data = await res.json();
         console.log(data);
 
+        // Expect 'content' in the server response
         const botReply = data.content || "No reply received.";
         await appendCarouselBotTypedMessage(messagesEl, botReply);
 
@@ -381,6 +382,10 @@ function typeTextBubble(fullText) {
     });
 }
 
+/**
+ * Send message to the Busibot.ai (bottom-right) server
+ * // CHANGED: matching the carousel approach
+ */
 async function sendBusibotMessage() {
     const textarea = document.getElementById('busibot-textarea');
     const text = textarea.value.trim();
@@ -392,13 +397,13 @@ async function sendBusibotMessage() {
     const typingIndicator = showTypingIndicator();
 
     try {
-        // ADDED: "sessionid" in request header
-        const payload = { message: text };
+        // CHANGED: Send { userId, message }, 'x-session-id' header, expect data.content
+        const payload = { userId, message: text };
         const response = await fetch(`${BOT_SERVER_URL}/chat`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'sessionid': sessionId
+                'x-session-id': sessionId // CHANGED: same header as carousel bots
             },
             body: JSON.stringify(payload)
         });
@@ -411,7 +416,8 @@ async function sendBusibotMessage() {
         }
 
         const data = await response.json();
-        const botReply = data.response || 'No reply from server.';
+        // CHANGED: server response is likely data.content
+        const botReply = data.content || 'No reply from server.';
         await typeTextBubble(botReply);
 
     } catch (err) {
@@ -477,6 +483,7 @@ function playNotificationSound() {
  * 4) Automatic Greeting after Page Load
  ************************************************************/
 window.addEventListener('load', () => {
+    // Generate a unique session ID for this user
     sessionId = Date.now() + "-" + Math.random().toString(36).substring(2);
     console.log("Session ID initialized:", sessionId); // Debugging
 
