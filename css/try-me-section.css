@@ -4,7 +4,7 @@
     src: url('/css/font/Cyberbang-7O9OB.woff2') format('woff2'), /* Modern browsers */
     url('/css/font/Cyberbang-7O9OB.woff') format('woff'); /* Older browsers */
     font-weight: normal; /* Adjust if your font has different weights */
-    font-style: normal; /* Adjust if your font has different styles */
+    font-style: normal;  /* Adjust if your font has different styles */
 }
 
 /* Try Me Section */
@@ -12,21 +12,30 @@
     font-family: 'cyberbang', Arial, sans-serif; /* Use custom font with fallback */
     text-align: center; /* Center the text and arrow */
     margin-top: -130px; /* No space above the section */
-    color: white; /* White text color */
-    font-weight: 500; /* Medium font weight */
+    color: white;       /* White text color */
+    font-weight: 500;   /* Medium font weight */
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 5px; /* Space between text and arrow */
-    cursor: pointer; /* Show pointer cursor on hover */
+    gap: 5px;           /* Space between text and arrow */
+    cursor: pointer;    /* Show pointer cursor on hover */
 }
 
+/*
+   Apply the same glow you used on .three-step-process h2
+   to the main text line.
+*/
 .try-me-text {
     font-size: 30px; /* Adjust the font size */
+    text-shadow:
+            0 0 6px   rgba(64, 207, 255, 0.8),
+            0 0 9px   rgba(64, 207, 255, 0.6),
+            0 0 12px  rgba(64, 207, 255, 0.4),
+            0 0 15px  rgba(64, 207, 255, 0.2);
 }
 
 .arrow-up {
-    font-size: 50px; /* Larger arrow size */
+    font-size: 50px;        /* Larger arrow size */
     animation: bounce 1.5s infinite; /* Add a bounce animation */
 }
 
@@ -39,7 +48,7 @@
         transform: translateY(-10px); /* Move up */
     }
     60% {
-        transform: translateY(-5px); /* Move up slightly */
+        transform: translateY(-5px);  /* Move up slightly */
     }
 }
 
@@ -51,6 +60,17 @@
 .try-me-section:hover .arrow-up {
     animation: bounce 0.5s infinite; /* Faster bounce on hover */
 }
+
+.arrow-up {
+    font-size: 50px;
+    animation: bounce 1.5s infinite;
+    text-shadow:
+            0 0 6px   rgba(64, 207, 255, 0.8),
+            0 0 9px   rgba(64, 207, 255, 0.6),
+            0 0 12px  rgba(64, 207, 255, 0.4),
+            0 0 15px  rgba(64, 207, 255, 0.2);
+}
+
 
 @media (max-width: 600px) {
     .try-me-section {

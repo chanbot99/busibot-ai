@@ -363,7 +363,7 @@
 /* DARK MODE OVERRIDES */
 /* ====================== */
 [data-theme="dark"] {
-  --chat-tab-bg: #1f2940;
+  --chat-tab-bg: #434343;
   --chat-tab-text: #ffffff;
   --chat-widget-bg: #1f1f1f;
   --chat-header-bg: #2d2d2d;
