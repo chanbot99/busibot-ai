@@ -109,3 +109,71 @@
         margin-bottom: 20px;
     }
 }
+
+/* Dark Mode Styles */
+[data-theme="dark"] {
+    --benefits-bg: #1a1a1a;
+    --benefits-text: #ffffff;
+    --benefits-card-bg: #2d2d2d;
+    --benefits-card-border: #404040;
+    --benefits-bullet: #4CAF50;
+    --statistics-bullet: #ffffff;
+}
+
+/* Benefits Section - Dark Mode */
+[data-theme="dark"] .benefits-section {
+    background-color: var(--benefits-bg);
+    color: var(--benefits-text);
+}
+
+[data-theme="dark"] .benefit {
+    background-color: var(--benefits-card-bg);
+    color: var(--benefits-text);
+    border: 1px solid var(--benefits-card-border);
+}
+
+[data-theme="dark"] .benefit h2 {
+    color: var(--benefits-text);
+}
+
+[data-theme="dark"] .benefit li {
+    color: var(--benefits-text);
+}
+
+[data-theme="dark"] .benefit li::before {
+    color: var(--benefits-bullet);
+}
+
+/* Statistics Section - Dark Mode */
+[data-theme="dark"] .statistics-section {
+    background-color: var(--benefits-bg);
+    color: var(--benefits-text);
+}
+
+[data-theme="dark"] .statistics-box {
+    background-color: var(--benefits-card-bg);
+    color: var(--benefits-text);
+    border: 1px solid var(--benefits-card-border);
+}
+
+[data-theme="dark"] .statistics-box h2 {
+    color: var(--benefits-text);
+}
+
+[data-theme="dark"] .statistics-box li {
+    color: var(--benefits-text);
+}
+
+[data-theme="dark"] .statistics-box li::before {
+    color: var(--statistics-bullet);
+}
+
+/* Preserve Glow Effects in Dark Mode */
+[data-theme="dark"] .benefit,
+[data-theme="dark"] .statistics-box {
+    box-shadow:
+            0 0 6px rgba(64, 207, 255, 0.8),
+            0 0 9px rgba(64, 207, 255, 0.6),
+            0 0 12px rgba(64, 207, 255, 0.4),
+            0 0 15px rgba(64, 207, 255, 0.2);
+}

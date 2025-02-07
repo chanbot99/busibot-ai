@@ -57,3 +57,8 @@
         grid-template-columns: 1fr; /* 1 column for mobile */
     }
 }
+
+[data-theme="dark"] .how-it-works {
+    background-color: var(--pricing-bg);
+    color: var(--pricing-text);
+}
