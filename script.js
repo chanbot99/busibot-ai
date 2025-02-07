@@ -79,8 +79,8 @@ const containerData = [
         messagesEl: document.getElementById('messages-boutique'),
         endpoint: "https://busibot-demo-boutique.onrender.com/chat",
         quickQuestions: [
-            { label: "Latest Collection", type: "question" },
-            { label: "Size Availability", type: "question" },
+            { label: "Can I order Online", type: "question" },
+            { label: "Hours of Operation", type: "question" },
             { label: "Return Policy", type: "question" },
             { label: "In-Store Events", type: "question" }
         ]
