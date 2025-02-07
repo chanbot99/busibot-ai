@@ -66,10 +66,10 @@ const containerData = [
         messagesEl: document.getElementById('messages-bakery'),
         endpoint: "https://busibot-demo-bakery.onrender.com/chat",
         quickQuestions: [
-            { label: "Today's Specials", type: "question" },
-            { label: "Vegan Options", type: "question" },
-            { label: "Delivery Options", type: "question" },
-            { label: "Custom Cakes", type: "question" }
+            { label: "This Week's Specials", type: "question" },
+            { label: "Hours of Operation", type: "question" },
+            { label: "Current Inventory", type: "question" },
+            { label: "Custom Order", type: "question" }
         ]
     },
     {
