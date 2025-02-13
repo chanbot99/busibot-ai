@@ -5,7 +5,7 @@ localStorage.removeItem('busibotThreadId');
 // ===========================
 //  Change this to your server
 // ===========================
-const BOT_SERVER_URL = "https://busibot-monorepo.onrender.com";
+const BOT_SERVER_URL = "https://busibot-chatbot.fly.dev";
 
 let userId = "user-" + Math.floor(Math.random() * 100000);
 
@@ -50,7 +50,7 @@ const containerData = [
         inputEl: document.getElementById('input-realestate'),
         sendBtn: document.getElementById('send-realestate'),
         messagesEl: document.getElementById('messages-realestate'),
-        endpoint: "https://busibot-demo-real-estate.onrender.com/chat",
+        endpoint: "https://demo-real-estate-late-surf-9109.fly.dev/chat",
         quickQuestions: [
             { label: "Available Properties", type: "question" },
             { label: "Schedule a Viewing", type: "question" },
@@ -63,7 +63,7 @@ const containerData = [
         inputEl: document.getElementById('input-bakery'),
         sendBtn: document.getElementById('send-bakery'),
         messagesEl: document.getElementById('messages-bakery'),
-        endpoint: "https://busibot-demo-bakery.onrender.com/chat",
+        endpoint: "https://demo-bakery.fly.dev/chat",
         quickQuestions: [
             { label: "This Week's Specials", type: "question" },
             { label: "Hours of Operation", type: "question" },
@@ -76,7 +76,7 @@ const containerData = [
         inputEl: document.getElementById('input-boutique'),
         sendBtn: document.getElementById('send-boutique'),
         messagesEl: document.getElementById('messages-boutique'),
-        endpoint: "https://busibot-demo-boutique.onrender.com/chat",
+        endpoint: "https://demo-boutique.fly.dev/chat",
         quickQuestions: [
             { label: "Can I order Online", type: "question" },
             { label: "Hours of Operation", type: "question" },
@@ -89,7 +89,7 @@ const containerData = [
         inputEl: document.getElementById('input-electrical'),
         sendBtn: document.getElementById('send-electrical'),
         messagesEl: document.getElementById('messages-electrical'),
-        endpoint: "https://busibot-demo-eletrical.onrender.com/chat",
+        endpoint: "https://demo-eletrical.fly.dev/chat",
         quickQuestions: [
             { label: "Schedule Repair", type: "question" },
             { label: "Electrical Upgrades", type: "question" },
