@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Busibot AI - Admin</title>
+    <link rel="icon" type="image/png" href="css/logo/FullLogo_NoBuffer.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Main base styles (for fonts, global resets, etc.) -->
+    <link rel="stylesheet" href="css/base.css" />
+
+    <!-- Admin-specific styles -->
+    <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+
+<!-- Particles background container -->
+<div id="particles-js"></div>
+
+<!-- Login Container -->
+<div class="login-container" id="login-container">
+    <h1>Admin Login</h1>
+    <label for="admin-password">Enter Admin Password:</label>
+    <input type="password" id="admin-password" />
+    <button id="login-btn">Login</button>
+    <p id="login-error" class="error hidden"></p>
+</div>
+
+<!-- Admin Dashboard Container (hidden by default) -->
+<div class="admin-container hidden" id="admin-container">
+    <h1>Busibot Admin Dashboard</h1>
+
+    <h2>Create New Chatbot</h2>
+    <div id="create-form">
+        <label for="userEmail">Client Email (optional):</label>
+        <input type="email" id="userEmail" placeholder="client@example.com" />
+
+        <label for="depositAmount">Deposit Amount (in cents):</label>
+        <input type="number" id="depositAmount" placeholder="e.g. 5000 for $50" />
+
+        <label for="finalAmount">Final Amount (in cents):</label>
+        <input type="number" id="finalAmount" placeholder="e.g. 40000 for $400" />
+
+        <label for="monthlyAmount">Monthly Amount (in cents) [optional]:</label>
+        <input type="number" id="monthlyAmount" placeholder="e.g. 2000 for $20" />
+
+        <button id="create-chatbot-btn">Create Chatbot</button>
+    </div>
+
+    <p id="create-message" class="message hidden"></p>
+    <p id="create-error" class="error hidden"></p>
+
+    <hr />
+
+    <h2>Existing Chatbots</h2>
+    <div class="chatbot-list" id="chatbot-list">
+        <!-- We'll load chatbots dynamically here in admin.js -->
+    </div>
+</div>
+
+<!-- Load particles.js (use the same version as your main site) -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<!-- Admin logic -->
+<script src="admin.js"></script>
+
+<script>
+    // Initialize Particles.js with a similar config to your index.html
+    particlesJS("particles-js", {
+        "particles": {
+            "number": { "value": 150, "density": { "enable": true, "value_area": 800 } },
+            "color": { "value": "#0299eb" },
+            "shape": { "type": "circle" },
+            "size": { "value": 3, "random": true },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#047aba",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": { "enable": true, "speed": 2 }
+        },
+        "retina_detect": true
+    });
+</script>
+
+</body>
+</html>
