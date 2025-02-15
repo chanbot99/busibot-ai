@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Payment Success - Busibot AI</title>
+    <link rel="icon" type="image/png" href="css/logo/FullLogo_NoBuffer.png" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Include your global/base CSS for consistent styling -->
+    <link rel="stylesheet" href="../css/base.css" />
+    <!-- Our new separate stylesheet for this success page -->
+    <link rel="stylesheet" href="../css/payment-success.css" />
+</head>
+<body>
+
+<!-- Particles background container -->
+<div id="particles-js"></div>
+
+<div class="success-container">
+    <h1><span class="checkmark">✔</span> Thank you for your purchase!</h1>
+    <p>Your payment was successful. We appreciate your business.</p>
+    <!-- Optionally show session_id or link to further instructions -->
+    <p><a href="https://busibot.ai">Return to Homepage</a></p>
+</div>
+
+<!-- Load particles.js (same version as your main site) -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<script>
+    // Initialize Particles.js with a similar config to your main site
+    particlesJS("particles-js", {
+        "particles": {
+            "number": {
+                "value": 150,
+                "density": { "enable": true, "value_area": 800 }
+            },
+            "color": { "value": "#0299eb" },
+            "shape": { "type": "circle" },
+            "size": { "value": 3, "random": true },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#047aba",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": { "enable": true, "speed": 2 }
+        },
+        "retina_detect": true
+    });
+</script>
+
+</body>
+</html>

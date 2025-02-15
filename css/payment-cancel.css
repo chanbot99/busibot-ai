@@ -1,0 +1,34 @@
+/* payment-cancel.css */
+.cancel-container {
+    position: relative;
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 40px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.cancel-container h1 {
+    color: #ff6b6b;
+    margin-top: 0;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.cancel-mark {
+    color: #ff6b6b; /* red for "X" */
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+
+.cancel-container a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.cancel-container a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Payment Canceled - Busibot AI</title>
+    <link rel="icon" type="image/png" href="css/logo/FullLogo_NoBuffer.png" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Include your global/base CSS -->
+    <link rel="stylesheet" href="../css/base.css" />
+    <!-- Payment Cancel-specific CSS file -->
+    <link rel="stylesheet" href="../css/payment-cancel.css" />
+</head>
+<body>
+
+<!-- Particles background container -->
+<div id="particles-js"></div>
+
+<!-- Centered container showing cancel message -->
+<div class="cancel-container">
+    <h1><span class="cancel-mark">✖</span> Payment Canceled</h1>
+    <p>Your transaction has been canceled. If this was a mistake or you need help, please contact support.</p>
+    <p><a href="https://busibot.ai">Return to Homepage</a></p>
+</div>
+
+<!-- Load particles.js (same version as your main site) -->
+<script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+<!-- Initialize Particles.js with a similar config to your main site -->
+<script>
+    particlesJS("particles-js", {
+        "particles": {
+            "number": {
+                "value": 150,
+                "density": { "enable": true, "value_area": 800 }
+            },
+            "color": { "value": "#0299eb" },
+            "shape": { "type": "circle" },
+            "size": { "value": 3, "random": true },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#047aba",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": { "enable": true, "speed": 2 }
+        },
+        "retina_detect": true
+    });
+</script>
+
+</body>
+</html>
