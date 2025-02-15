@@ -29,7 +29,7 @@ async function createDepositSession(chatbot) {
             paymentType: 'deposit',
         },
         // If deposit is successful, go to payment-success
-        success_url: 'https://busibot.ai/payment-success?session_id={CHECKOUT_SESSION_ID}',
+        success_url: 'https://busibot.ai/deposit-payment-success?session_id={CHECKOUT_SESSION_ID}',
         cancel_url: 'https://busibot.ai/payment-cancel.html',
     });
 }
