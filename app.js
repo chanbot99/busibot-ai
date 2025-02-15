@@ -125,6 +125,27 @@ app.get('/payment-success', async (req, res) => {
     }
 });
 
+app.get('/final-payment-success', async (req, res) => {
+    const sessionId = req.query.session_id;
+    if (!sessionId) {
+        return res.status(400).send('<h1>Missing session_id in query</h1>');
+    }
+
+    try {
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+
+        if (!session || session.payment_status !== 'paid') {
+            return res.status(400).send('<h1>Payment not completed or invalid session</h1>');
+        }
+
+        // If valid, serve final-payment-success.html
+        return res.sendFile(path.join(__dirname, 'public', 'final-payment-success.html'));
+    } catch (err) {
+        console.error('Error verifying Stripe session:', err);
+        return res.status(500).send('<h1>Server error verifying payment</h1>');
+    }
+});
+
 /**
  * 10) Start the Server
  */
