@@ -1,0 +1,35 @@
+/* final-payment-success.css */
+.success-container {
+    position: relative;
+    max-width: 600px;
+    margin: 80px auto;
+    padding: 40px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.success-container h1 {
+    color: #007bff;
+    margin-top: 0;
+    /* vertical-align in case icon is slightly off line-height */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.checkmark {
+    color: #2ecc71; /* green for checkmark */
+    margin-right: 8px;
+    font-size: 1.2em;
+}
+
+.success-container a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.success-container a:hover {
+    text-decoration: underline;
+}
