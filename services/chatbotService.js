@@ -4,12 +4,6 @@
  * chatbotService
  * -------------
  * Provides helper methods for CRUD and status updates on Chatbot documents.
- *
- * Depends on the Mongoose Chatbot model.
- * Functions are designed to:
- *   1) Query or update a chatbot by ID.
- *   2) Handle deposit or final payment flags.
- *   3) Finalize a chatbot once paid.
  */
 
 const Chatbot = require('../models/Chatbot');
@@ -17,27 +11,35 @@ const Chatbot = require('../models/Chatbot');
 /**
  * findChatbotById
  * ---------------
- * @param {String} id - The MongoDB _id of the chatbot document.
- * @returns {Promise<Object|null>} - Returns the chatbot document or null if not found.
  */
 async function findChatbotById(id) {
-    return await Chatbot.findById(id);
+    console.log('[chatbotService] - findChatbotById called for id:', id);
+    const chatbot = await Chatbot.findById(id);
+    console.log('[chatbotService] - findChatbotById result:', chatbot);
+    return chatbot;
 }
 
 /**
  * markDepositPaid
  * ---------------
  * Marks the chatbot's `depositPaid` as true.
- *
- * @param {String} id - The chatbot _id.
- * @returns {Promise<Object|null>} - Updated chatbot document, or null if not found.
  */
 async function markDepositPaid(id) {
+    console.log('[chatbotService] - markDepositPaid called for id:', id);
     const chatbot = await Chatbot.findById(id);
-    if (!chatbot) return null;
+
+    if (!chatbot) {
+        console.error('[chatbotService] - markDepositPaid: No chatbot found for id:', id);
+        return null;
+    }
+
+    console.log('[chatbotService] - markDepositPaid: Found chatbot:', chatbot._id);
 
     chatbot.depositPaid = true;
+    console.log('[chatbotService] - depositPaid set to true, saving...');
     await chatbot.save();
+
+    console.log('[chatbotService] - markDepositPaid: depositPaid updated successfully for chatbot', chatbot._id);
     return chatbot;
 }
 
@@ -45,17 +47,23 @@ async function markDepositPaid(id) {
  * markFinalPaid
  * -------------
  * Marks the chatbot's `finalPaymentPaid` as true.
- *
- * @param {String} id - The chatbot _id.
- * @returns {Promise<Object|null>} - Updated chatbot document, or null if not found.
  */
 async function markFinalPaid(id) {
+    console.log('[chatbotService] - markFinalPaid called for id:', id);
     const chatbot = await Chatbot.findById(id);
-    if (!chatbot) return null;
+
+    if (!chatbot) {
+        console.error('[chatbotService] - markFinalPaid: No chatbot found for id:', id);
+        return null;
+    }
+
+    console.log('[chatbotService] - markFinalPaid: Found chatbot:', chatbot._id);
 
     chatbot.finalPaymentPaid = true;
-    // Optionally update chatbot.status or perform additional logic here.
+    console.log('[chatbotService] - finalPaymentPaid set to true, saving...');
     await chatbot.save();
+
+    console.log('[chatbotService] - markFinalPaid: finalPaymentPaid updated successfully for chatbot', chatbot._id);
     return chatbot;
 }
 
@@ -64,21 +72,21 @@ async function markFinalPaid(id) {
  * ---------------
  * Sets the chatbot status to 'finalized' once finalPaymentPaid is true,
  * and generates a code snippet for embedding.
- *
- * @param {String} id - The chatbot _id.
- * @throws {Error} If final payment is not done yet.
- * @returns {Promise<Object|null>} - Updated chatbot doc, or null if not found.
  */
 async function finalizeChatbot(id) {
+    console.log('[chatbotService] - finalizeChatbot called for id:', id);
     const chatbot = await Chatbot.findById(id);
-    if (!chatbot) return null;
 
-    // Ensure the final payment is completed
+    if (!chatbot) {
+        console.error('[chatbotService] - finalizeChatbot: No chatbot found for id:', id);
+        return null;
+    }
+
     if (!chatbot.finalPaymentPaid) {
+        console.error('[chatbotService] - finalizeChatbot: final payment not done yet for chatbot:', chatbot._id);
         throw new Error('Final payment not done yet');
     }
 
-    // Mark status as finalized and create code snippet
     chatbot.status = 'finalized';
     const snippet = `
   <script 
@@ -88,7 +96,10 @@ async function finalizeChatbot(id) {
   `;
     chatbot.codeSnippet = snippet;
 
+    console.log('[chatbotService] - finalizeChatbot: status set to "finalized", codeSnippet generated, saving...');
     await chatbot.save();
+    console.log('[chatbotService] - finalizeChatbot: chatbot updated successfully:', chatbot._id);
+
     return chatbot;
 }
 
