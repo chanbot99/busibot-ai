@@ -1,8 +1,8 @@
 /* Define the custom font */
 @font-face {
     font-family: 'cyberbang'; /* Name your font */
-    src: url('/css/font/Cyberbang-7O9OB.woff2') format('woff2'), /* Modern browsers */
-    url('/css/font/Cyberbang-7O9OB.woff') format('woff'); /* Older browsers */
+    src: url('/public/csslic/css/font/Cyberbang-7O9OB.woff2') format('woff2'), /* Modern browsers */
+    url('/public/csslic/css/font/Cyberbang-7O9OB.woff') format('woff'); /* Older browsers */
     font-weight: normal; /* Adjust if your font has different weights */
     font-style: normal;  /* Adjust if your font has different styles */
 }

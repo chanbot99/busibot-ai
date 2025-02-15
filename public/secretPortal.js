@@ -1,20 +1,9 @@
 /*************************************************************
  * secretPortal.js
- * --------
- * Front-end logic for the Busibot Admin dashboard. This script:
- *  - Sends the admin password to the server for verification (no more hard-coded password).
- *  - Creates new chatbot records by sending POST requests to the backend.
- *  - Fetches and displays the list of chatbots.
- *  - Provides a button to send final+subscription payment links once deposit is paid.
  *************************************************************/
 
 /*************************************************************
- * 1) Configuration for Separate Backend Domain
- *************************************************************/
-const API_BASE_URL = 'https://busibot-payments.fly.dev';
-
-/*************************************************************
- * 2) Basic Password + Toggling Containers
+ * 1) Basic Password + Toggling Containers
  *************************************************************/
 const loginContainer = document.getElementById('login-container');
 const adminContainer = document.getElementById('admin-container');
@@ -24,15 +13,11 @@ const loginError = document.getElementById('login-error');
 
 /**
  * On login, we POST the password to the server's /api/admin/login route.
- * The server verifies the password via hashed credentials.
- * If valid, we hide the login UI and load the admin dashboard.
- * If invalid, we display an error message.
  */
 loginBtn.addEventListener('click', async () => {
-    // Clear any previous error
     loginError.classList.add('hidden');
-
     const enteredPass = adminPasswordInput.value.trim();
+
     if (!enteredPass) {
         loginError.textContent = "Please enter a password.";
         loginError.classList.remove('hidden');
@@ -40,24 +25,21 @@ loginBtn.addEventListener('click', async () => {
     }
 
     try {
-        // Send the entered password to the server for verification
-        const res = await fetch(`${API_BASE_URL}/api/admin/login`, {
+        // Now using /api/admin/login (relative path)
+        const res = await fetch("/api/admin/login", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ password: enteredPass })
         });
 
         if (res.ok) {
-            // Password is valid: hide login, show admin UI, load chatbots
             loginContainer.classList.add('hidden');
             adminContainer.classList.remove('hidden');
             loadAllChatbots();
         } else if (res.status === 401) {
-            // Invalid password
             loginError.textContent = "Invalid password.";
             loginError.classList.remove('hidden');
         } else {
-            // Some other error
             const data = await res.json();
             loginError.textContent = data.error || "Unknown login error.";
             loginError.classList.remove('hidden');
@@ -70,7 +52,7 @@ loginBtn.addEventListener('click', async () => {
 });
 
 /*************************************************************
- * 3) Creating a Chatbot
+ * 2) Creating a Chatbot
  *************************************************************/
 const createChatbotBtn = document.getElementById('create-chatbot-btn');
 const userEmailInput = document.getElementById('userEmail');
@@ -80,26 +62,15 @@ const monthlyAmountInput = document.getElementById('monthlyAmount');
 const createMessage = document.getElementById('create-message');
 const createError = document.getElementById('create-error');
 
-/**
- * When the "Create Chatbot" button is clicked, read the
- * input fields, generate a random uniqueBotId, and POST
- * the data to the server's /chatbots endpoint.
- */
 createChatbotBtn.addEventListener('click', async () => {
-    // Hide any previous success/error messages
     createMessage.classList.add('hidden');
     createError.classList.add('hidden');
 
-    // Gather input values
     const userEmail = userEmailInput.value.trim();
     const depositAmount = parseFloat(depositAmountInput.value);
     const finalAmount = parseFloat(finalAmountInput.value);
     const monthlyAmount = parseFloat(monthlyAmountInput.value) || 0;
 
-    // Generate a simple 6-char random ID
-    const uniqueBotId = Math.random().toString(36).substring(2, 8);
-
-    // Basic validation
     if (!depositAmount || !finalAmount) {
         createError.textContent = "Deposit and Final amounts are required!";
         createError.classList.remove('hidden');
@@ -107,8 +78,7 @@ createChatbotBtn.addEventListener('click', async () => {
     }
 
     try {
-        // 1) POST to create the new chatbot doc
-        const createRes = await fetch(`${API_BASE_URL}/api/admin/chatbots`, {
+        const createRes = await fetch("/api/admin/chatbots", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -116,17 +86,15 @@ createChatbotBtn.addEventListener('click', async () => {
                 depositAmount,
                 finalAmount,
                 monthlyAmount,
-                uniqueBotId
+                uniqueBotId: Math.random().toString(36).substring(2, 8)
             })
         });
         const createData = await createRes.json();
 
-        // Check for creation errors
         if (!createRes.ok) {
             throw new Error(createData.error || 'Failed to create chatbot');
         }
 
-        // 2) If successful, show success + clear fields
         createMessage.textContent = "Chatbot created successfully!";
         createMessage.classList.remove('hidden');
 
@@ -135,35 +103,26 @@ createChatbotBtn.addEventListener('click', async () => {
         finalAmountInput.value = '';
         monthlyAmountInput.value = '';
 
-        // 3) Immediately call /create-deposit-session
-        // to generate+email the deposit link, if userEmail is set
+        // Immediately call /create-deposit-session if needed
         if (createData._id) {
             console.log("Creating deposit session for chatbot:", createData._id);
-            const depositRes = await fetch(`${API_BASE_URL}/api/create-deposit-session`, {
+            const depositRes = await fetch("/api/create-deposit-session", {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ chatbotId: createData._id })
             });
-
-            if (!depositRes.ok) {
-                console.warn("Failed to create deposit session automatically.");
-                // We won't block the overall creation if deposit session fails,
-                // but you could show a warning to the user if you want.
-            }
+            // if (!depositRes.ok) { ... } // optionally handle errors
         }
 
-        // 4) Reload the chatbot list in the admin UI
         loadAllChatbots();
-
     } catch (err) {
-        // Show error to the user
         createError.textContent = err.message;
         createError.classList.remove('hidden');
     }
 });
 
 /*************************************************************
- * 4) Loading and Rendering Chatbots
+ * 3) Loading and Rendering Chatbots
  *************************************************************/
 const chatbotList = document.getElementById('chatbot-list');
 
@@ -175,15 +134,13 @@ const chatbotList = document.getElementById('chatbot-list');
 async function loadAllChatbots() {
     chatbotList.innerHTML = 'Loading...';
     try {
-        const res = await fetch(`${API_BASE_URL}/api/admin/chatbots`);
+        const res = await fetch("/api/admin/chatbots");
         const data = await res.json();
 
         if (!res.ok) {
             throw new Error(data.error || 'Failed to load chatbots');
         }
-
         renderChatbots(data);
-
     } catch (err) {
         chatbotList.innerHTML = `<p class="error">${err.message}</p>`;
     }
@@ -229,7 +186,6 @@ function renderChatbots(chatbots) {
             const sendEmailBtn = document.createElement('button');
             sendEmailBtn.textContent = "Send Final + Subscription Email";
 
-            // On click, triggers the function to send the email link
             sendEmailBtn.addEventListener('click', () => {
                 sendFinalAndSubscriptionEmail(bot._id);
             });
@@ -240,25 +196,21 @@ function renderChatbots(chatbots) {
 }
 
 /*************************************************************
- * 5) Send Final + Subscription Email
+ * 4) Send Final + Subscription Email
  *************************************************************/
 async function sendFinalAndSubscriptionEmail(chatbotId) {
     try {
-        // POST to the server route that generates the final+subscription session
-        // and emails the link to the user's email.
-        const res = await fetch(`${API_BASE_URL}/api/send-final-and-subscription-email`, {
+        const res = await fetch("/api/send-final-and-subscription-email", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ chatbotId })
         });
-        const data = await res.json();
-
         if (!res.ok) {
+            const data = await res.json();
             throw new Error(data.error || 'Failed to send email');
         }
-
-        alert(`Email sent: ${data.message || "Success!"}`);
-
+        const result = await res.json();
+        alert(`Email sent: ${result.message || "Success!"}`);
     } catch (err) {
         alert(`Error: ${err.message}`);
     }

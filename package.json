@@ -1,14 +1,30 @@
 {
   "name": "busibot-ai-website",
   "version": "1.0.0",
-  "description": "A simple front-end site with lite-server for local dev",
+  "description": "A unified Node/Express + front-end site for Busibot AI",
+  "main": "app.js",
   "scripts": {
-    "start": "lite-server"
-  },
-  "devDependencies": {
-    "lite-server": "^2.6.1"
+    "dev": "nodemon app.js",
+    "start": "node app.js"
   },
   "dependencies": {
-    "particlesjs": "^2.2.3"
-  }
+    "bcrypt": "^5.1.0",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.18.2",
+    "mongoose": "^6.9.2",
+    "nodemailer": "^6.10.0",
+    "particlesjs": "^2.2.3",
+    "stripe": "^11.17.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.21"
+  },
+  "engines": {
+    "node": ">=16"
+  },
+  "keywords": [],
+  "author": "YourName",
+  "license": "ISC"
 }

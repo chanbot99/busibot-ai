@@ -205,7 +205,7 @@ async function appendCarouselBotTypedMessage(messagesEl, fullText) {
     const typingIndicator = document.createElement('div');
     typingIndicator.classList.add('message-row', 'bot', 'typing-indicator');
     typingIndicator.innerHTML = `
-        <img class="avatar bot" src="./css/images/bot.png" alt="Bot Avatar" />
+        <img class="avatar bot" src="css/images/bot.png" alt="Bot Avatar" />
         <div class="bubble typing-bubble">
             <span class="dots"></span>
             <span class="dots"></span>
@@ -340,7 +340,7 @@ function showTypingIndicator() {
     const typingDiv = document.createElement('div');
     typingDiv.classList.add('message-row', 'bot', 'typing-indicator');
     typingDiv.innerHTML = `
-        <img class="avatar bot" src="./css/images/bot.png" alt="Bot Avatar" />
+        <img class="avatar bot" src="css/images/bot.png" alt="Bot Avatar" />
         <div class="bubble typing-bubble">
             <span class="dots"></span>
             <span class="dots"></span>
