@@ -63,9 +63,7 @@ app.get('/secretPortal', (req, res) => {
  * Mount /api/stripe-webhook with raw body parser BEFORE express.json().
  * Ensures the request body is raw for signature verification.
  */
-app.use(
-    '/api/stripe-webhook',
-    bodyParser.raw({ type: 'application/json' }),
+app.use('/api/stripe-webhook', bodyParser.raw({ type: 'application/json' }),
     webhookRoutes
 );
 

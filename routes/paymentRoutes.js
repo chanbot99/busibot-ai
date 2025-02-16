@@ -10,6 +10,8 @@ const Chatbot = require('../models/Chatbot');
 const PaymentService = require('../services/paymentService');
 const nodemailer = require('nodemailer');
 const PaymentController = require('../controllers/paymentController');
+const {Stripe} = require("stripe");
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 /**
  * Send Final + Subscription Email
@@ -107,6 +109,47 @@ Busibot Team`,
     } catch (err) {
         console.error('Error in send-final-and-subscription-email:', err);
         return res.status(500).json({ error: 'Server error sending final+subscription email' });
+    }
+});
+
+router.get('/session-info', async (req, res) => {
+    const sessionId = req.query.session_id;
+
+    if (!sessionId) {
+        return res.status(400).json({ error: 'No session_id provided' });
+    }
+
+    try {
+        // Retrieve the Checkout Session from Stripe, expanding payment_intent
+        const session = await stripe.checkout.sessions.retrieve(sessionId, {
+            expand: ['payment_intent'],
+        });
+
+        // session.amount_total is in cents; convert to dollars
+        // If you have multiple line items, this is the total
+        const amountInDollars = (session.amount_total / 100).toFixed(2);
+
+        // We'll choose to display transaction ID as the PaymentIntent ID
+        // or fallback to the session.id if payment_intent is absent
+        const transactionId = session.payment_intent?.id || session.id;
+
+        // Payment date: use payment_intent.created if available; else session.created
+        const paymentEpoch = session.payment_intent?.created || session.created;
+        const paymentDate = new Date(paymentEpoch * 1000).toLocaleString();
+
+        // Optionally retrieve chatbotId from session.metadata
+        const chatbotId = session.metadata?.chatbotId || 'N/A';
+
+        // Return all fields as JSON to the front-end
+        return res.json({
+            transactionId,
+            amountPaid: `$${amountInDollars}`,
+            paymentDate,
+            chatbotId,
+        });
+    } catch (err) {
+        console.error('Error retrieving session info from Stripe:', err);
+        return res.status(500).json({ error: 'Failed to retrieve session info' });
     }
 });
 
