@@ -11,7 +11,7 @@
 
 html, body {
     scroll-behavior: smooth;
-    font-family: 'Carson', Arial, sans-serif;
+    font-family: "Open Sans", sans-serif !important;
     margin: 0;
     padding: 0;
     width: 100%;
