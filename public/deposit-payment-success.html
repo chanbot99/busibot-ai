@@ -6,8 +6,9 @@
     <link rel="icon" type="image/png" href="css/logo/FullLogo_NoBuffer.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Include your global/base CSS for consistent styling -->
+    <!-- Global/Base CSS -->
     <link rel="stylesheet" href="css/base.css" />
+
     <!-- Custom stylesheet for this success page -->
     <link rel="stylesheet" href="css/deposit-payment-success.css" />
 </head>
@@ -27,12 +28,10 @@
     <div class="receipt-info">
         <h2>Payment Receipt</h2>
         <ul>
-            <!-- We'll fill these placeholders via JavaScript.
-                 If no data is found, display fallback text. -->
-            <li><strong>Transaction ID:</strong> <span id="transaction-id">Fetching...</span></li>
-            <li><strong>Amount Paid:</strong> <span id="amount-paid">Fetching...</span></li>
-            <li><strong>Payment Date:</strong> <span id="payment-date">Fetching...</span></li>
-            <li><strong>Chatbot ID:</strong> <span id="chatbot-id">Fetching...</span></li>
+            <li><strong>Transaction ID:</strong> <span id="transaction-id">N/A</span></li>
+            <li><strong>Amount Paid:</strong> <span id="amount-paid">N/A</span></li>
+            <li><strong>Payment Date:</strong> <span id="payment-date">N/A</span></li>
+            <li><strong>Chatbot ID:</strong> <span id="chatbot-id">N/A</span></li>
         </ul>
     </div>
 
@@ -60,11 +59,11 @@
     </p>
 </div>
 
-<!-- Load particles.js (same version as your main site) -->
+<!-- Particles.js -->
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
 <script>
-    // Initialize Particles.js with a similar config to your main site
+    // 1) Initialize Particles.js with a config similar to your main site
     particlesJS("particles-js", {
         "particles": {
             "number": {
@@ -86,24 +85,8 @@
         "retina_detect": true
     });
 
-    /**
-     * OPTIONAL: Fetch dynamic receipt data based on session_id.
-     *
-     * This code requires you to have a backend endpoint:
-     *   GET /api/payments/session-info?session_id=...
-     *
-     * Example response (JSON):
-     * {
-     *   "transactionId": "pi_3Qxxx",
-     *   "amountPaid": "$50.00",
-     *   "paymentDate": "Feb 15, 2025",
-     *   "chatbotId": "63f9e2357d68b980dc2f96b2"
-     * }
-     *
-     * Then we fill in the placeholders in the receipt section.
-     */
+    // 2) Optional: Fetch dynamic receipt data based on session_id
     (function fetchReceiptData() {
-        // Parse session_id from the URL
         const urlParams = new URLSearchParams(window.location.search);
         const sessionId = urlParams.get('session_id');
 
@@ -115,15 +98,22 @@
         fetch(`/api/payments/session-info?session_id=${sessionId}`)
             .then(res => res.json())
             .then(data => {
-                document.getElementById('transaction-id').textContent = data.transactionId || 'N/A';
-                document.getElementById('amount-paid').textContent = data.amountPaid || 'N/A';
-                document.getElementById('payment-date').textContent = data.paymentDate || 'N/A';
-                document.getElementById('chatbot-id').textContent = data.chatbotId || 'N/A';
+                if (data.transactionId) {
+                    document.getElementById('transaction-id').textContent = data.transactionId;
+                }
+                if (data.amountPaid) {
+                    document.getElementById('amount-paid').textContent = data.amountPaid;
+                }
+                if (data.paymentDate) {
+                    document.getElementById('payment-date').textContent = data.paymentDate;
+                }
+                if (data.chatbotId) {
+                    document.getElementById('chatbot-id').textContent = data.chatbotId;
+                }
             })
             .catch(err => {
                 console.error("Failed to fetch session info:", err);
             });
-
     })();
 </script>
 
