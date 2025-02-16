@@ -112,7 +112,7 @@ Busibot Team`,
     }
 });
 
-router.get('/session-info', async (req, res) => {
+router.get('/payments/session-info', async (req, res) => {
     const sessionId = req.query.session_id;
 
     if (!sessionId) {
