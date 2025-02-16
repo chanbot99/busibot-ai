@@ -1,35 +1,36 @@
-/* final-payment-success.css */
-.success-container {
-    position: relative;
-    max-width: 600px;
-    margin: 80px auto;
-    padding: 40px;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.25);
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
+/* final-payment-success.css (add after your existing .success-container rules) */
 
-.success-container h1 {
-    color: #007bff;
-    margin-top: 0;
-    /* vertical-align in case icon is slightly off line-height */
+/* Make the finalize button stand out with a modern look */
+.finalize-button {
     display: inline-block;
-    vertical-align: middle;
+    margin: 20px auto;
+    padding: 12px 28px;
+    font-weight: 600;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #28a745; /* green, or use #007bff for a blue theme */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    /* Optionally add a subtle box-shadow */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.checkmark {
-    color: #2ecc71; /* green for checkmark */
-    margin-right: 8px;
-    font-size: 1.2em;
+/* Hover effect: slightly darker background, slight upward move */
+.finalize-button:hover {
+    background-color: #218838; /* ~10% darker than #28a745 */
+    transform: translateY(-1px);
 }
 
-.success-container a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
+/* Active (pressed) effect: even darker, push down slightly */
+.finalize-button:active {
+    background-color: #1e7e34;
+    transform: translateY(1px);
 }
 
-.success-container a:hover {
-    text-decoration: underline;
+/* If you want a focus outline for accessibility */
+.finalize-button:focus {
+    outline: 2px dashed #28a745;
+    outline-offset: 2px;
 }
