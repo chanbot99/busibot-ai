@@ -1,30 +1,21 @@
 // paymentRoutes.js
 // ---------------
-// This file defines routes for handling payment-related actions that don't
-// fit neatly into the PaymentController, such as emailing deposit links or
-// final+subscription links via Nodemailer, or advanced logic triggered by admin UI.
+// Houses routes for deposit session creation, final+subscription emailing, session info retrieval, and finalizing the chatbot.
 
 const express = require('express');
 const router = express.Router();
+const nodemailer = require('nodemailer');
+const { Stripe } = require('stripe');
 const Chatbot = require('../models/Chatbot');
 const PaymentService = require('../services/paymentService');
-const nodemailer = require('nodemailer');
-const PaymentController = require('../controllers/paymentController');
-const {Stripe} = require("stripe");
+const chatbotService = require('../services/chatbotService'); // <--- your service
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 /**
- * Send Final + Subscription Email
- * -------------------------------
  * POST /send-final-and-subscription-email
- *
- * This endpoint is called by the admin front end to:
- *  1) Verify the chatbot exists and deposit is paid.
- *  2) Create a final+subscription Stripe Checkout Session.
- *  3) Automatically send an HTML email with a "pay" button link to the user's email.
- *
- * Expects a JSON body with:
- *   - chatbotId: the _id of the chatbot document
+ * ---------------------------------------
+ * Creates a final+subscription Stripe Checkout Session & emails it to the client.
+ * Expects { chatbotId } in req.body.
  */
 router.post('/send-final-and-subscription-email', async (req, res) => {
     try {
@@ -33,29 +24,29 @@ router.post('/send-final-and-subscription-email', async (req, res) => {
             return res.status(400).json({ error: 'chatbotId is required' });
         }
 
-        // 1) Find the chatbot record
+        // 1) Find the chatbot
         const chatbot = await Chatbot.findById(chatbotId);
         if (!chatbot) {
             return res.status(404).json({ error: 'Chatbot not found' });
         }
 
-        // Ensure deposit was paid before sending final + subscription email
+        // 2) Must have depositPaid = true
         if (!chatbot.depositPaid) {
             return res.status(400).json({ error: 'Deposit not paid yet' });
         }
 
-        // 2) Create the single Checkout session for final + subscription
+        // 3) Create final+subscription session
         const session = await PaymentService.createFinalPlusSubscriptionSession(chatbot);
         if (!session.url) {
             return res.status(500).json({ error: 'Failed to create Stripe session' });
         }
 
-        // 3) If we have an email address, send it automatically
+        // 4) Email user if available
         if (!chatbot.userEmail) {
             return res.status(400).json({ error: 'No userEmail associated with this chatbot' });
         }
 
-        // Configure Nodemailer with your IONOS SMTP details
+        // IonOS email config
         const transporter = nodemailer.createTransport({
             host: 'smtp.ionos.com',
             port: 587,
@@ -66,7 +57,6 @@ router.post('/send-final-and-subscription-email', async (req, res) => {
             }
         });
 
-        // You can style this button & text however you like in HTML
         const mailOptions = {
             from: 'no-reply@busibot.ai',
             to: chatbot.userEmail,
@@ -80,29 +70,27 @@ Thank you for using Busibot AI.
 Best regards,
 Busibot Team`,
             html: `
-                <p>Hello,</p>
-                <p>Your chatbot is ready! Please click the button below to pay the remaining balance and begin your monthly subscription:</p>
-                <p>
-                  <a href="${session.url}" 
-                    style="display:inline-block;padding:10px 20px;font-weight:bold;color:#ffffff;background:#007bff;
-                           text-decoration:none;border-radius:5px;">
-                    Pay Final + Subscription
-                  </a>
-                </p>
-                <p>Thank you for using Busibot AI.<br />
-                Best regards,<br />
-                Busibot Team</p>
-            `
+        <p>Hello,</p>
+        <p>Your chatbot is ready! Please click the button below to pay the remaining balance and begin your monthly subscription:</p>
+        <p>
+          <a href="${session.url}" 
+            style="display:inline-block;padding:10px 20px;font-weight:bold;color:#ffffff;background:#007bff;
+                   text-decoration:none;border-radius:5px;">
+            Pay Final + Subscription
+          </a>
+        </p>
+        <p>Thank you for using Busibot AI.<br />
+        Best regards,<br />
+        Busibot Team</p>
+      `
         };
 
-        // Send the email and respond when complete
         transporter.sendMail(mailOptions, (err, info) => {
             if (err) {
                 console.error('Failed to send final+subscription email:', err);
                 return res.status(500).json({ error: 'Failed to send email' });
             }
             console.log('Final+subscription email sent:', info.response);
-            // 4) Return success
             return res.json({ message: 'Final+subscription email sent successfully!' });
         });
 
@@ -112,35 +100,69 @@ Busibot Team`,
     }
 });
 
+/**
+ * POST /finalize-chatbot
+ * ----------------------
+ * Calls chatbotService.finalizeChatbot to finalize the record,
+ * ensures finalPaymentPaid is true, then returns a snippet.
+ * Expects { chatbotId } in req.body.
+ */
+router.post('/finalize-chatbot', async (req, res) => {
+    try {
+        const { chatbotId } = req.body;
+        if (!chatbotId) {
+            return res.status(400).json({ error: 'Missing chatbotId' });
+        }
+
+        // Instead of redoing the logic, call your service:
+        const chatbot = await chatbotService.finalizeChatbot(chatbotId);
+        if (!chatbot) {
+            return res.status(404).json({ error: 'Chatbot not found' });
+        }
+
+        // finalizeChatbot will throw if finalPaymentPaid = false
+        // If we reached here, it means it was successful
+        return res.json({
+            success: true,
+            message: 'Chatbot finalized successfully!',
+            codeSnippet: chatbot.codeSnippet
+        });
+
+    } catch (err) {
+        console.error('Error finalizing chatbot:', err);
+
+        // If we threw an error "Final payment not done yet", handle that
+        if (err.message === 'Final payment not done yet') {
+            return res.status(400).json({ error: err.message });
+        }
+
+        return res.status(500).json({ error: 'Server error finalizing chatbot' });
+    }
+});
+
+/**
+ * GET /payments/session-info
+ * --------------------------
+ * Retrieves Stripe checkout session details for receipt display
+ * (transaction ID, amount, date, chatbotId in metadata, etc.)
+ */
 router.get('/payments/session-info', async (req, res) => {
     const sessionId = req.query.session_id;
-
     if (!sessionId) {
         return res.status(400).json({ error: 'No session_id provided' });
     }
 
     try {
-        // Retrieve the Checkout Session from Stripe, expanding payment_intent
         const session = await stripe.checkout.sessions.retrieve(sessionId, {
             expand: ['payment_intent'],
         });
 
-        // session.amount_total is in cents; convert to dollars
-        // If you have multiple line items, this is the total
         const amountInDollars = (session.amount_total / 100).toFixed(2);
-
-        // We'll choose to display transaction ID as the PaymentIntent ID
-        // or fallback to the session.id if payment_intent is absent
         const transactionId = session.payment_intent?.id || session.id;
-
-        // Payment date: use payment_intent.created if available; else session.created
         const paymentEpoch = session.payment_intent?.created || session.created;
         const paymentDate = new Date(paymentEpoch * 1000).toLocaleString();
-
-        // Optionally retrieve chatbotId from session.metadata
         const chatbotId = session.metadata?.chatbotId || 'N/A';
 
-        // Return all fields as JSON to the front-end
         return res.json({
             transactionId,
             amountPaid: `$${amountInDollars}`,
@@ -154,15 +176,10 @@ router.get('/payments/session-info', async (req, res) => {
 });
 
 /**
- * create-deposit-session (Custom)
- * -------------------------------
  * POST /create-deposit-session
- *
- * Creates a Stripe Checkout Session for the deposit payment and
- * optionally emails an HTML deposit link button to the user if userEmail exists.
- *
- * Request body:
- *   - chatbotId: the _id of the chatbot
+ * -----------------------------
+ * Creates a Stripe deposit session & optionally emails a deposit link.
+ * Expects { chatbotId } in req.body.
  */
 router.post('/create-deposit-session', async (req, res) => {
     try {
@@ -203,19 +220,19 @@ Please click the link to complete the deposit. Thank you!
 Best regards,
 Busibot AI`,
                 html: `
-                    <p>Hello,</p>
-                    <p>Please click the button below to complete your deposit payment:</p>
-                    <p>
-                      <a href="${session.url}"
-                         style="display:inline-block;padding:10px 20px;font-weight:bold;color:#ffffff;background:#28a745;
-                                text-decoration:none;border-radius:5px;">
-                        Pay Deposit
-                      </a>
-                    </p>
-                    <p>Thank you for using Busibot AI.<br />
-                    Best regards,<br />
-                    Busibot Team</p>
-                `
+          <p>Hello,</p>
+          <p>Please click the button below to complete your deposit payment:</p>
+          <p>
+            <a href="${session.url}"
+               style="display:inline-block;padding:10px 20px;font-weight:bold;color:#ffffff;background:#28a745;
+                      text-decoration:none;border-radius:5px;">
+              Pay Deposit
+            </a>
+          </p>
+          <p>Thank you for using Busibot AI.<br />
+          Best regards,<br />
+          Busibot Team</p>
+        `
             };
 
             transporter.sendMail(mailOptions, (err, info) => {
@@ -227,7 +244,7 @@ Busibot AI`,
             });
         }
 
-        // Return the session URL so the front end can display it if needed
+        // Return session url for the client/admin if needed
         res.json({ url: session.url });
 
     } catch (err) {

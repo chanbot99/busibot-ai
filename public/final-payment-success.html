@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <title>Payment Success - Busibot AI</title>
+    <title>Final Payment Success - Busibot AI</title>
     <link rel="icon" type="image/png" href="css/logo/FullLogo_NoBuffer.png" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- Include your global/base CSS for consistent styling -->
+    <!-- Base/global CSS -->
     <link rel="stylesheet" href="css/base.css" />
-    <!-- Our new separate stylesheet for this success page -->
+    <!-- Custom stylesheet for this page -->
     <link rel="stylesheet" href="css/final-payment-success.css" />
 </head>
 <body>
@@ -18,17 +17,54 @@
 <div id="particles-js"></div>
 
 <div class="success-container">
-    <h1><span class="checkmark">✔</span> Thank you for your purchase!</h1>
-    <p>Your payment was successful. We appreciate your business.</p>
-    <!-- Optionally show session_id or link to further instructions -->
-    <p><a href="https://busibot.ai">Return to Homepage</a></p>
+    <h1><span class="checkmark">✔</span> Thank you for your final payment!</h1>
+    <p>Your payment was successful. You can now test your chatbot below.</p>
+
+    <!-- Chatbot Test Section -->
+    <div class="chatbot-test-section">
+        <h2>Test Your Chatbot</h2>
+        <!-- Option A: embed an iframe that loads the chatbot, if you have a separate URL -->
+        <!-- Or Option B: direct inline code if your chatbot is purely front-end. -->
+        <!-- We'll do an iframe example for demonstration. -->
+        <iframe
+                src="https://your-chatbot-domain.com/test?someParam=yourChatbotId"
+                width="100%"
+                height="400"
+                style="border: 1px solid #ccc;"
+        >
+        </iframe>
+        <p>You have X days (e.g., 7) to test your chatbot. Make sure everything is correct!</p>
+    </div>
+
+    <!-- Finalize Button & Snippet Area -->
+    <div class="finalize-section">
+        <button id="finalize-btn" class="finalize-button">Finalize Chatbot</button>
+
+        <!-- Hidden container for snippet & instructions, displayed after finalize -->
+        <div id="snippet-container" class="snippet-container" style="display: none;">
+            <h3>Chatbot Embed Code</h3>
+            <p>Copy and paste this code snippet into your website’s HTML (just before the closing <code>&lt;/body&gt;</code> tag):</p>
+            <textarea id="code-snippet" readonly rows="6" style="width:100%;"></textarea>
+
+            <h4>Implementation Guide</h4>
+            <ol>
+                <li>Paste the snippet right above <code>&lt;/body&gt;</code> in your website’s main HTML file.</li>
+                <li>Refresh your site to confirm the chatbot appears.</li>
+                <li>Optionally adjust styling or position with CSS.</li>
+            </ol>
+        </div>
+    </div>
+
+    <p class="home-link">
+        <a href="https://busibot.ai">Return to Homepage</a>
+    </p>
 </div>
 
-<!-- Load particles.js (same version as your main site) -->
+<!-- Particles.js -->
 <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
 
 <script>
-    // Initialize Particles.js with a similar config to your main site
+    // 1) Initialize Particles.js with a similar config to your main site
     particlesJS("particles-js", {
         "particles": {
             "number": {
@@ -48,6 +84,49 @@
             "move": { "enable": true, "speed": 2 }
         },
         "retina_detect": true
+    });
+
+    // 2) Example finalize function
+    //    Calls your backend (POST /api/finalize-chatbot) to get codeSnippet
+    document.getElementById('finalize-btn').addEventListener('click', async () => {
+        try {
+            // If your 'chatbotId' is known from the session or metadata, retrieve it
+            // Or parse it from the URL if needed. For demonstration, let's do it from the URL.
+            const urlParams = new URLSearchParams(window.location.search);
+            const chatbotId = urlParams.get('chatbot_id'); // or from your sessionId
+
+            if (!chatbotId) {
+                alert("No chatbotId found. Unable to finalize.");
+                return;
+            }
+
+            const response = await fetch('/api/finalize-chatbot', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chatbotId })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                alert("Error finalizing chatbot: " + (errorData.error || response.statusText));
+                return;
+            }
+
+            // Expect JSON with { success, codeSnippet }
+            const data = await response.json();
+            if (data.success) {
+                // Show snippet container
+                document.getElementById('snippet-container').style.display = 'block';
+                // Put the snippet in the textarea
+                document.getElementById('code-snippet').value = data.codeSnippet || 'No snippet returned.';
+            } else {
+                alert("Chatbot finalize error: " + (data.error || "Unknown"));
+            }
+
+        } catch (err) {
+            console.error("Failed to finalize chatbot:", err);
+            alert("Server error trying to finalize chatbot.");
+        }
     });
 </script>
 
